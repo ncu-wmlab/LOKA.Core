@@ -1,0 +1,20 @@
+{
+    "name": "com.xrlab.loka",
+    "version": "0.0.1",
+    "displayName": "LOKA",
+    "description": "VR Streaming",
+    "unity": "2020.3",
+    "unityRelease": "33f1",
+    "documentationUrl": "",
+    "changelogUrl": "",
+    "licensesUrl": "https://youtu.be/dQw4w9WgXcQ",
+    "author": {
+      "name": "NCU wmlab & xrlab",
+      "email": "wmlabwmlab@gmail.com",
+      "url": "https://staff.csie.ncu.edu.tw/shihchingyeh/index2.html"
+    },
+    "samples": [
+      
+    ]
+}
+  
