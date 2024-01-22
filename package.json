@@ -13,6 +13,9 @@
       "email": "wmlabwmlab@gmail.com",
       "url": "https://staff.csie.ncu.edu.tw/shihchingyeh/index2.html"
     },
+    "dependencies":{
+      "com.unity.renderstreaming": "3.1.0-exp.7"
+    },
     "samples": [
       
     ]

@@ -446,6 +446,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ===LOKA HOST===
       objectReference: {fileID: 0}
+    - target: {fileID: 2979547229290811742, guid: aa46bff39d815944097aa3b84e9d7390, type: 3}
+      propertyPath: m_useDefault
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2979547229290811743, guid: aa46bff39d815944097aa3b84e9d7390, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -17309,7 +17313,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 7.1e-44, z: 0, w: 1.1239367e+10}
+  m_BoundingSphereOverride: {x: 5.5e-43, y: 1.7596482e+11, z: 5.5e-43, w: 6e-44}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
