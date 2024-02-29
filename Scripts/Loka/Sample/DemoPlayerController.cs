@@ -20,14 +20,17 @@ public class DemoPlayerController : MonoBehaviour
     [SerializeField] float rotateSpeed = 10f;
 
 
-    Vector2 inputMovement;
-    Vector2 inputLook;
-    Vector3 initialPosition;
+    Vector2 _inputMovement;
+    Vector2 _inputLook;
+    Vector3 _initialPosition;
+    Vector3 _initialCameraPosition;  // VR pose offset
+
 
     protected void Awake()
     {
         _inputReceiver.onDeviceChange += OnDeviceChange;
-        initialPosition = transform.position;        
+        _initialPosition = transform.position;      
+        _initialCameraPosition = _cameraTransform.position;  
     }
 
     void OnDeviceChange(InputDevice device, InputDeviceChange change)
@@ -65,10 +68,10 @@ public class DemoPlayerController : MonoBehaviour
         _label.text = "player "+player.gameObject.name.Substring(12, 4); // FIXME
         
         var forwardDirection = Quaternion.Euler(0, _cameraTransform.transform.eulerAngles.y, 0);
-        var moveForward = forwardDirection * new Vector3(inputMovement.x, 0, inputMovement.y);
+        var moveForward = forwardDirection * new Vector3(_inputMovement.x, 0, _inputMovement.y);
         player.transform.Translate(moveForward * Time.deltaTime * moveSpeed);
 
-        var moveAngles = new Vector3(-inputLook.y, inputLook.x);
+        var moveAngles = new Vector3(-_inputLook.y, _inputLook.x);
         var newAngles = _cameraTransform.transform.localEulerAngles + moveAngles * Time.deltaTime * rotateSpeed;
         _cameraTransform.transform.localEulerAngles = new Vector3(newAngles.x, newAngles.y, 0);
         _chatBubble.transform.localEulerAngles = new Vector3(0, -newAngles.y, 0);
@@ -77,7 +80,7 @@ public class DemoPlayerController : MonoBehaviour
         // reset if the ball fall down from the floor
         if (player.transform.position.y < -5)
         {
-            player.transform.position = initialPosition;
+            player.transform.position = _initialPosition;
             player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
@@ -86,6 +89,15 @@ public class DemoPlayerController : MonoBehaviour
     // {
     //     _label.text = text;
     // }
+
+    private IEnumerator HideChatBubble()
+    {
+        _chatBubble.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3);
+        _chatBubble.gameObject.SetActive(false);
+    }
+
+#region InputSystem
 
     public void OnControlsChanged()
     {
@@ -101,27 +113,39 @@ public class DemoPlayerController : MonoBehaviour
 
     public void OnMovement(InputAction.CallbackContext value)
     {
-        inputMovement = value.ReadValue<Vector2>();
+        _inputMovement = value.ReadValue<Vector2>();
     }
 
     public void OnLook(InputAction.CallbackContext value)
     {
-        inputLook = value.ReadValue<Vector2>();
+        _inputLook = value.ReadValue<Vector2>();
     }
 
     public void OnChatButtonClicked()
     {        
-        print("send by "+player.name);
+        print("Send by "+player.name);
         _chatBubble.GetComponentInChildren<Text>().text = _chatInput.text;
         _chatInput.text = "";
         StopAllCoroutines();
         StartCoroutine(HideChatBubble());
+    }   
+
+    public void OnPosePosition(InputAction.CallbackContext context)
+    {
+        // TODO Check isVR 
+        // VR Pose Position
+        var position = context.ReadValue<Vector3>();
+        // print("VR Pose Position: "+position);
+        _cameraTransform.transform.localPosition = position;
     }
 
-    private IEnumerator HideChatBubble()
+    public void OnPoseRotate(InputAction.CallbackContext context)
     {
-        _chatBubble.gameObject.SetActive(true);
-        yield return new WaitForSeconds(3);
-        _chatBubble.gameObject.SetActive(false);
+        // TODO Check isVR 
+        // VR Pose Rotate
+        var rotation = context.ReadValue<Quaternion>();
+        // print("VR Pose Rotate: "+rotation);
+        _cameraTransform.transform.rotation = rotation;
     }
+#endregion
 }
