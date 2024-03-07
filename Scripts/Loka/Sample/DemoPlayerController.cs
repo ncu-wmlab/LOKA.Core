@@ -65,7 +65,7 @@ public class DemoPlayerController : MonoBehaviour
 
     private void Update()
     {
-        _label.text = "player "+player.gameObject.name.Substring(12, 4); // FIXME
+        _label.text = "player "+player.gameObject.name; // FIXME
         
         var forwardDirection = Quaternion.Euler(0, _cameraTransform.transform.eulerAngles.y, 0);
         var moveForward = forwardDirection * new Vector3(_inputMovement.x, 0, _inputMovement.y);

@@ -22751,7 +22751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1619853022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29075,6 +29075,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2979547229290811740, guid: aa46bff39d815944097aa3b84e9d7390, type: 3}
+      propertyPath: _playerPrefab
+      value: 
+      objectReference: {fileID: 8136562388917400696, guid: 1c609332bc1f639409b0bebe68e5e804, type: 3}
     - target: {fileID: 2979547229290811741, guid: aa46bff39d815944097aa3b84e9d7390, type: 3}
       propertyPath: m_Name
       value: ===LOKA HOST===
