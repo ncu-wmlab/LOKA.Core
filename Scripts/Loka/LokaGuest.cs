@@ -37,9 +37,9 @@ public class LokaGuest : MonoBehaviour
         _audioStreamReceiver.targetAudioSource = _audioSource;
 
         // register get signal events
-        _videoStreamReceiver.OnUpdateReceiveTexture += (texture) => {
+        _videoStreamReceiver.OnUpdateReceiveTexture += (texture) => {            
             _overlayRawImage.texture = texture;
-            print("[Video] Receive stream RES: "+texture.width + "x" + texture.height);
+            print("[Video] Receive stream RES: "+texture?.width + "x" + texture?.height);
         };
         _videoStreamReceiver.OnStartedStream += (s) => {
             _overlayRawImage.enabled = true;
@@ -102,7 +102,7 @@ public class LokaGuest : MonoBehaviour
     {
         if(string.IsNullOrWhiteSpace(connectionId))
         {
-            connectionId = Guid.NewGuid().ToString();            
+            connectionId = "LokaConnection-"+Guid.NewGuid().ToString();
         }        
 
         // TODO stream config

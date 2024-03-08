@@ -259,7 +259,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1811954145393255004}
   - component: {fileID: 1811954145393255003}
-  - component: {fileID: 2602232908604656945}
   - component: {fileID: 7308925008317261150}
   - component: {fileID: 8446084842426105027}
   m_Layer: 0
@@ -365,23 +364,6 @@ MonoBehaviour:
     m_ActionId: e773b1f9-ce5b-4fa2-9c1f-d194202c43b7
     m_ActionName: Menu Controls/TogglePause[/Keyboard/p]
   m_DefaultActionMap: Player Controls
---- !u!114 &2602232908604656945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1811954145393255002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43d29ee6e6822cc44830b6c1e115b4bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  local: 0
-  label: loka
-  OnMessageReceived:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &7308925008317261150
 MonoBehaviour:
   m_ObjectHideFlags: 0

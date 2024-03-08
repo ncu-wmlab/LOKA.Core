@@ -23,6 +23,11 @@ public class ConnectionPanel : MonoBehaviour
     void Start()
     {
         _camera = Camera.main;
+
+        _remoteFovSlider.onValueChanged.AddListener((float value) => {
+            _remoteFovText.text = $"{value:0}°";
+            FindObjectOfType<SceneControlChannel>().SendFov(value);
+        });
     }
 
     /// <summary>
