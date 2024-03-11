@@ -540,9 +540,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 3239503251671424486}
     m_Modifications:
     - target: {fileID: 5625116892241701590, guid: eff48629924ff024198072ab58e647c7, type: 3}
-      propertyPath: IsHost
-      value: 1
+      propertyPath: local
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5625116892241701590, guid: eff48629924ff024198072ab58e647c7, type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 7533806627833164517}
     - target: {fileID: 5625116893055473674, guid: eff48629924ff024198072ab58e647c7, type: 3}
       propertyPath: m_Name
       value: LOKA Channels
@@ -678,5 +682,10 @@ PrefabInstance:
 --- !u!4 &9176668787244985276 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 7533806627442361746}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &7533806627833164517 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 7533806627442361746}
   m_PrefabAsset: {fileID: 0}
