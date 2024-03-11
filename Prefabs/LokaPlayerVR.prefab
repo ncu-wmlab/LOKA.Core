@@ -183,6 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3239503251671424486}
+  - component: {fileID: 3303706094376304112}
   - component: {fileID: 6743755646594412184}
   - component: {fileID: 8808259370055985005}
   m_Layer: 0
@@ -211,6 +212,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3303706094376304112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8136562388917400696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e77302fddbb6294f945d403f97fa7c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6743755646594412184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,8 +530,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TextureSize: {x: 1024, y: 1024}
-  m_Source: 3
-  m_Camera: {fileID: 1811954143655597363, guid: 859b6ddc3655d534580ab0c5095e28c6, type: 3}
+  m_Source: 0
+  m_Camera: {fileID: 7533806627833164517}
   m_Texture: {fileID: 8400000, guid: 4a2b2015a1a472141b29f49d01bcfd2f, type: 2}
   m_WebCamDeviceIndex: 0
   m_Depth: 16
@@ -610,9 +623,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 3239503251671424486}
     m_Modifications:
     - target: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_TargetDisplay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 8400000, guid: 4a2b2015a1a472141b29f49d01bcfd2f, type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 941652828260492489, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Parameters.widthMultiplier
       value: 0.01

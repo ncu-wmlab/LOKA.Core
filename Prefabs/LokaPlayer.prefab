@@ -143,7 +143,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 4a2b2015a1a472141b29f49d01bcfd2f, type: 2}
+  m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -304,7 +304,19 @@ MonoBehaviour:
   m_Actions: {fileID: -944628639613478452, guid: 8c0e401c9f7f88d43b8650b1b972f45f, type: 3}
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8446084842426105027}
+        m_TargetAssemblyTypeName: DemoPlayerController, LOKA
+        m_MethodName: OnMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 548e32fd-77d1-40e5-8197-32ca56b41bc0
     m_ActionName: Player Controls/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Touchscreen/primaryTouch/delta]
   - m_PersistentCalls:
@@ -377,7 +389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TextureSize: {x: 1024, y: 1024}
-  m_Source: 3
+  m_Source: 0
   m_Camera: {fileID: 1811954143655597363}
   m_Texture: {fileID: 8400000, guid: 4a2b2015a1a472141b29f49d01bcfd2f, type: 2}
   m_WebCamDeviceIndex: 0
