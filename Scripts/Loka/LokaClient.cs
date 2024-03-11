@@ -7,9 +7,9 @@ using System;
 using UnityEngine.Networking;
 
 /// <summary>
-/// LOKA Guest Signal Handler
+/// LOKA Client Signal Handler
 /// </summary>
-public class LokaGuest : MonoBehaviour
+public class LokaClient : MonoBehaviour
 {
     [Header("Bindings")]
     [SerializeField] private RawImage _overlayRawImage;

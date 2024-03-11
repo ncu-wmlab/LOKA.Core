@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LokaDemoClient : MonoBehaviour
 {
-    [SerializeField] LokaGuest _lokaGuest;
+    [SerializeField] LokaClient _lokaClient;
 
     [SerializeField] Button _connectButton;
     [SerializeField] Button _disconnectButton;
@@ -15,11 +15,11 @@ public class LokaDemoClient : MonoBehaviour
     void Start()
     {
         _connectButton.onClick.AddListener(() => {
-            _lokaGuest.StartStream();
+            _lokaClient.StartStream();
         });
 
         _disconnectButton.onClick.AddListener(() => {
-            _lokaGuest.StopStream();
+            _lokaClient.StopStream();
         });
     }
 
