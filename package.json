@@ -1,6 +1,6 @@
 {
     "name": "com.xrlab.loka",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "displayName": "LOKA",
     "description": "VR Streaming",
     "unity": "2020.3",
@@ -10,7 +10,7 @@
     "licensesUrl": "https://youtu.be/dQw4w9WgXcQ",
     "author": {
       "name": "NCU wmlab & xrlab",
-      "email": "wmlabwmlab@gmail.com",
+      "email": "jcxyis@g.ncu.edu.tw",
       "url": "https://staff.csie.ncu.edu.tw/shihchingyeh/index2.html"
     },
     "dependencies":{
@@ -18,7 +18,11 @@
       "com.unity.nuget.newtonsoft-json": "3.0.2"
     },
     "samples": [
-      
+      {
+        "displayName": "VR Hosting",
+        "description": "Import this to host a VR Game. You'll need XR Interaction Toolkit v.2.0 or newer.",
+        "path": "Samples~/VR Hosting/"
+      }
     ]
 }
   

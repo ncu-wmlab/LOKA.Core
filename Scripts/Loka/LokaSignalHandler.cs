@@ -35,7 +35,7 @@ public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChanne
     {
         if(_connectionIds.Contains(eventData.connectionId))
         {
-            Debug.LogWarning("Connection already exists: " + eventData.connectionId);
+            Debug.LogWarning("[LokaSignalHandler] Connection already exists: " + eventData.connectionId);
             return;
         }
         _connectionIds.Add(eventData.connectionId);
@@ -61,7 +61,7 @@ public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChanne
 
     public void OnAddChannel(SignalingEventData eventData)
     {
-        print($"Add channel {eventData.connectionId}");
+        print($"[LokaSignalHandler] Add channel {eventData.connectionId}");
         var go = _connectedPlayers[eventData.connectionId];
         var channels = go.GetComponentsInChildren<IDataChannel>();
         var channel = channels.FirstOrDefault(c => !c.IsLocal && !c.IsConnected);
@@ -86,7 +86,7 @@ public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChanne
     {
         if (!_connectionIds.Contains(connectionId))
         {
-           Debug.LogWarning("Connection already disposed: " + connectionId);
+           Debug.LogWarning("[LokaSignalHandler] Uable to dispose connection, not exist: " + connectionId);
            return;
         }
         _connectionIds.Remove(connectionId);
@@ -96,5 +96,6 @@ public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChanne
         Destroy(player);
         _connectedPlayers.Remove(connectionId);
         _connectionIds.Remove(connectionId);
+        Debug.Log("[LokaSignalHandler] Dispose Connection: " + connectionId);
     }
 }
