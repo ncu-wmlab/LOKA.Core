@@ -6,7 +6,9 @@ using System.Linq;
 
 /// <summary>
 /// LOKA Host Signal Handler
+/// (Receives Signals from signal server)
 /// </summary>
+[RequireComponent(typeof(SignalingManager))]
 public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChannelHandler, IDisconnectHandler, IDeletedConnectionHandler
 {
     [Header("Prefabs")]
@@ -73,23 +75,23 @@ public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChanne
 
     public void OnDeletedConnection(SignalingEventData eventData)
     {
-        DisposeConnection(eventData.connectionId);
+        RemoveConnection(eventData.connectionId);
     }
 
     public void OnDisconnect(SignalingEventData eventData)
     {
-        DisposeConnection(eventData.connectionId);
+        RemoveConnection(eventData.connectionId);
     }
 
     /// <summary>
     /// When Guest Disconnect
     /// </summary>
     /// <param name="connectionId"></param>
-    void DisposeConnection(string connectionId) 
+    void RemoveConnection(string connectionId) 
     {
         if (!_connectionIds.Contains(connectionId))
         {
-           Debug.LogWarning("[LokaSignalHandler] Uable to dispose connection, not exist: " + connectionId);
+           Debug.LogWarning("[LokaSignalHandler] Uable to remove connection that is not exist: " + connectionId);
            return;
         }
         _connectionIds.Remove(connectionId);
@@ -99,6 +101,6 @@ public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChanne
         Destroy(player);
         _connectedPlayers.Remove(connectionId);
         _connectionIds.Remove(connectionId);
-        Debug.Log("[LokaSignalHandler] Dispose Connection: " + connectionId);
+        Debug.Log("[LokaSignalHandler] Removed Connection: " + connectionId);
     }
 }

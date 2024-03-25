@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2979547229290811743}
   - component: {fileID: 2979547229290811742}
   - component: {fileID: 2979547229290811740}
+  - component: {fileID: 8807065347138503937}
   m_Layer: 0
   m_Name: ===LOKA HOST===
   m_TagString: Untagged
@@ -45,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045786cf504bd7347842d6948241cbd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_useDefault: 1
-  signalingSettingsObject: {fileID: 11400000, guid: 497ec6390c06b404a8273dc362a600fa, type: 2}
+  m_useDefault: 0
+  signalingSettingsObject: {fileID: 11400000, guid: d94bfbc601dc95f4b9d3897661c388f6, type: 2}
   signalingSettings:
     id: 0
   handlers: []
@@ -77,6 +78,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 1811954145393255002, guid: 859b6ddc3655d534580ab0c5095e28c6, type: 3}
+--- !u!114 &8807065347138503937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2979547229290811741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f3e47de3ec159843b46cd43ce99bb06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1605345707892007625
 PrefabInstance:
   m_ObjectHideFlags: 0
