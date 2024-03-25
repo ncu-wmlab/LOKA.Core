@@ -46,8 +46,11 @@ public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChanne
         _connectedPlayers.Add(eventData.connectionId, newPlayer);
 
         // Register Sender
-        var sender = newPlayer.GetComponentInChildren<StreamSenderBase>();
-        AddSender(eventData.connectionId, sender);
+        var sender = newPlayer.GetComponentsInChildren<StreamSenderBase>();
+        foreach(var s in sender)
+        {
+            AddSender(eventData.connectionId, s);
+        }
 
         // Register Channels
         var channels = newPlayer.GetComponentsInChildren<IDataChannel>();
