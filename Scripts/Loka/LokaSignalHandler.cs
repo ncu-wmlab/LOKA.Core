@@ -22,7 +22,6 @@ public class LokaSignalHandler : SignalingHandlerBase, IOfferHandler, IAddChanne
     /// 連線 ID 對應的 GameObject
     /// </summary>
     Dictionary<string, GameObject> _connectedPlayers = new Dictionary<string, GameObject>();
-    List<Component> _streams = new List<Component>();
 
 
     /// <summary>
