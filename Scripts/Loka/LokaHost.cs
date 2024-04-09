@@ -17,7 +17,7 @@ public class LokaHost : MonoBehaviour
     {
         if(StartSignalServerAtStart)
         {
-            // FIXME 
+            // FIXME  StartSignalServerAtStart
             Debug.LogWarning("StartSignalServerAtStart is not supported yet. Doing nothing.");
         }        
     }
