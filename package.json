@@ -1,6 +1,6 @@
 {
     "name": "com.xrlab.loka",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "displayName": "LOKA (Host)",
     "description": "NCU WMLAB/XRLAB VR Streaming Solution",
     "unity": "2020.3",
@@ -15,7 +15,12 @@
     },
     "dependencies":{
       "com.unity.renderstreaming": "3.1.0-exp.7",
-      "com.unity.nuget.newtonsoft-json": "3.0.2"
+      "com.unity.nuget.newtonsoft-json": "3.0.2",
+
+      "com.xrlab.labframe": "0.0.16",
+      "com.xrlab.labframe_breathstrap": "1.0.0",
+      "com.xrlab.labframe_eyetrack": "1.0.0",
+      "com.xrlab.labframe_ganglion": "1.0.12"
     },
     "samples": [
       {

@@ -9,13 +9,13 @@ public class SceneControlChannel : LokaChannel
 
     protected override void MessageReceived(string tag, object msg)
     {
+        // ignore if not 
+        if(!IsLocal)
+            return;
+
         if(tag == "FOV")
         {
             _camera.fieldOfView = (float)(double)msg;
-        }
-        else
-        {
-            throw new System.NotImplementedException();
         }
     }
 
