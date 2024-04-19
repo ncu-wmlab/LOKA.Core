@@ -80,7 +80,9 @@ public partial class LabDeviceChannel : LokaChannel
     {
         _datas[tag] = msg;
 
-        if (IsConnected)
+        // TODO ignroe duplication
+
+        if (IsConnected && msg != null)
         {
             SendMessage(((int)tag).ToString(), msg);
         }

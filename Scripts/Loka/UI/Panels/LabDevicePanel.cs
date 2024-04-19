@@ -40,7 +40,7 @@ public class LabDevicePanel : BaseDictPanel
         try
         {
             _SetMetric($"Ganglion", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.GANGLION_ISAVAILABLE));
-            _SetMetric($"Ganglion", "IsConnected", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.GANGLION_EEGDATA));
+            _SetMetric($"Ganglion", "IsConnected", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.GANGLION_ISCONNECTED));
             if (GanglionManager.Instance.IsConnected)
             {
                 _SetMetric($"Ganglion", "EEGData", _labDeviceChannel.GetData<Ganglion_EEGData>());
@@ -57,21 +57,21 @@ public class LabDevicePanel : BaseDictPanel
         {
             _SetMetric($"EyeTrack", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.EYETRACK_ISAVAILABLE));
             var eyeLeftRightData = _labDeviceChannel.GetData<EyeLeftRightData>();
-            _SetMetric($"EyeTrack.EyeLeftRightData", "Timestamp", eyeLeftRightData.Timestamp);
-            _SetMetric($"EyeTrack.EyeLeftRightData", "LeftEyeOpenness", eyeLeftRightData.LeftEyeOpenness);
-            _SetMetric($"EyeTrack.EyeLeftRightData", "RightEyeOpenness", eyeLeftRightData.RightEyeOpenness);
-            _SetMetric($"EyeTrack.EyeLeftRightData", "LeftEyePositionGuide", eyeLeftRightData.LeftEyePositionGuide);
-            _SetMetric($"EyeTrack.EyeLeftRightData", "RightEyePositionGuide", eyeLeftRightData.RightEyePositionGuide);
+            _SetMetric($"EyeTrack.EyeLeftRightData", "Timestamp", eyeLeftRightData?.Timestamp);
+            _SetMetric($"EyeTrack.EyeLeftRightData", "LeftEyeOpenness", eyeLeftRightData?.LeftEyeOpenness);
+            _SetMetric($"EyeTrack.EyeLeftRightData", "RightEyeOpenness", eyeLeftRightData?.RightEyeOpenness);
+            _SetMetric($"EyeTrack.EyeLeftRightData", "LeftEyePositionGuide", eyeLeftRightData?.LeftEyePositionGuide);
+            _SetMetric($"EyeTrack.EyeLeftRightData", "RightEyePositionGuide", eyeLeftRightData?.RightEyePositionGuide);
             var eyeCombinedData = _labDeviceChannel.GetData<EyeCombinedData>();
             _SetMetric($"EyeTrack.CombinedData", "Timestamp", eyeCombinedData.Timestamp);
-            _SetMetric($"EyeTrack.CombinedData", "CombineEyeGazeVector", eyeCombinedData.CombineEyeGazeVector);
-            _SetMetric($"EyeTrack.CombinedData", "CombineEyeGazePoint", eyeCombinedData.CombineEyeGazePoint);
+            _SetMetric($"EyeTrack.CombinedData", "CombineEyeGazeVector", eyeCombinedData?.CombineEyeGazeVector);
+            _SetMetric($"EyeTrack.CombinedData", "CombineEyeGazePoint", eyeCombinedData?.CombineEyeGazePoint);
             var eyeFocusData = _labDeviceChannel.GetData<EyeFocusData>();
-            _SetMetric($"EyeTrack.EyeFocusData", "FocusDistance", eyeFocusData.FocusDistance);
-            _SetMetric($"EyeTrack.EyeFocusData", "Timestamp", eyeFocusData.Timestamp);
-            _SetMetric($"EyeTrack.EyeFocusData", "FocusName", eyeFocusData.FocusName);
-            _SetMetric($"EyeTrack.EyeFocusData", "FocusNormal", eyeFocusData.FocusNormal);
-            _SetMetric($"EyeTrack.EyeFocusData", "FocusPoint", eyeFocusData.FocusPoint);
+            _SetMetric($"EyeTrack.EyeFocusData", "FocusDistance", eyeFocusData?.FocusDistance);
+            _SetMetric($"EyeTrack.EyeFocusData", "Timestamp", eyeFocusData?.Timestamp);
+            _SetMetric($"EyeTrack.EyeFocusData", "FocusName", eyeFocusData?.FocusName);
+            _SetMetric($"EyeTrack.EyeFocusData", "FocusNormal", eyeFocusData?.FocusNormal);
+            _SetMetric($"EyeTrack.EyeFocusData", "FocusPoint", eyeFocusData?.FocusPoint);
         }
         catch (Exception e)
         {
@@ -81,8 +81,9 @@ public class LabDevicePanel : BaseDictPanel
         // Breath
         try
         {
+            _SetMetric($"BreathStrap", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.BREATHSTRAP_ISAVAILABLE));
             _SetMetric($"BreathStrap", "IsConnected", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.BREATHSTRAP_ISCONNECTED));
-            _SetMetric($"BreathStrap", "BreathValue", _labDeviceChannel.GetData<BreathStrapData>(LabDeviceChannel.DataEnum.BREATHSTRAP_BREATHDATA).breathValue);
+            _SetMetric($"BreathStrap", "BreathValue", _labDeviceChannel.GetData<BreathStrapData>(LabDeviceChannel.DataEnum.BREATHSTRAP_BREATHDATA)?.breathValue);
         }
         catch (Exception e)
         {

@@ -62,6 +62,11 @@ public partial class LabDeviceChannel : LokaChannel
 
 /* -------------------------------------------------------------------------- */
     
+    /// <summary>
+    /// Could be null!
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public T GetData<T>()
     {        
         switch(typeof(T).Name)
@@ -89,11 +94,17 @@ public partial class LabDeviceChannel : LokaChannel
         return default;
     }
 
+    /// <summary>
+    /// Could be null!
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="key"></param>
+    /// <returns></returns>
     public T GetData<T>(DataEnum key)
     {
         if(!_datas.ContainsKey(key))
         {
-            Debug.LogWarning($"[LabDeviceChannel] GetData: Key not found: {key}");
+            // Debug.LogWarning($"[LabDeviceChannel] GetData: Key not found: {key}, returning default value (null).");
             return default;
         }
         return (T)_datas[key];
