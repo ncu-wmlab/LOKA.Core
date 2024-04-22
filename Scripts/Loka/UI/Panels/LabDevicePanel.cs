@@ -40,9 +40,11 @@ public class LabDevicePanel : BaseDictPanel
         try
         {
             _SetMetric($"Ganglion", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.GANGLION_ISAVAILABLE));
-            _SetMetric($"Ganglion", "IsConnected", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.GANGLION_ISCONNECTED));
-            if (GanglionManager.Instance.IsConnected)
+            bool ganglionIsConnected = _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.GANGLION_ISCONNECTED);
+            _SetMetric($"Ganglion", "IsConnected", ganglionIsConnected);
+            if (ganglionIsConnected)
             {
+                Debug.LogError(_labDeviceChannel.GetData<Ganglion_EEGData>());
                 _SetMetric($"Ganglion", "EEGData", _labDeviceChannel.GetData<Ganglion_EEGData>());
                 _SetMetric($"Ganglion", "ImpedanceData", _labDeviceChannel.GetData<Ganglion_ImpedanceData>());
             }
@@ -75,7 +77,7 @@ public class LabDevicePanel : BaseDictPanel
         }
         catch (Exception e)
         {
-            Debug.LogWarning("[LabDevicePanel] Error fetching EyeTrack Data: " + e);
+            // Debug.LogWarning("[LabDevicePanel] Error fetching EyeTrack Data: " + e);
         }
 
         // Breath
@@ -102,5 +104,27 @@ public class LabDevicePanel : BaseDictPanel
         // }
 
         base.Update();
+    }
+
+    /* -------------------------------------------------------------------------- */
+
+    public void RequestGanglionConnect(bool start)
+    {
+        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceOp.GANGLION_DO_CONNECT, start);
+    }
+
+    public void RequestGanglionEEG(bool start)
+    {
+        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceOp.GANGLION_RECEIVE_EEG, start);
+    }
+
+    public void RequestGanglionImpedance(bool start)
+    {
+        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceOp.GANGLION_RECEIVE_IMPEDANCE, start);
+    }
+
+    public void RequestBreathStrapConnect(bool start)
+    {
+        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceOp.BREATHSTRAP_DO_CONNECT, start);
     }
 }

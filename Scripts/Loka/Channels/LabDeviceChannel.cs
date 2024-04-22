@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.RenderStreaming;
 using System;
+using Newtonsoft.Json.Linq;
 
 public partial class LabDeviceChannel : LokaChannel
 {
@@ -13,6 +14,7 @@ public partial class LabDeviceChannel : LokaChannel
 
 /* -------------------------------------------------------------------------- */
 
+    // Usually Client -> Host
     public enum DataEnum
     {
         GANGLION_ISAVAILABLE = 10,
@@ -25,7 +27,16 @@ public partial class LabDeviceChannel : LokaChannel
         EYETRACK_EYEFOCUSDATA,
         BREATHSTRAP_ISAVAILABLE = 30,
         BREATHSTRAP_ISCONNECTED,
-        BREATHSTRAP_BREATHDATA ,
+        BREATHSTRAP_BREATHDATA,
+    }
+
+    // Host -> Client
+    public enum LabDeviceOp
+    {
+        GANGLION_DO_CONNECT = 10010,
+        GANGLION_RECEIVE_EEG,
+        GANGLION_RECEIVE_IMPEDANCE,
+        BREATHSTRAP_DO_CONNECT = 10030,
     }
 
 /* -------------------------------------------------------------------------- */
@@ -38,6 +49,8 @@ public partial class LabDeviceChannel : LokaChannel
     {
         if(IsLocal)
             LocalStart();
+        else
+            HostStart();
     }
 
     /// <summary>
@@ -51,19 +64,22 @@ public partial class LabDeviceChannel : LokaChannel
 
 /* -------------------------------------------------------------------------- */
 
-    protected override void MessageReceived(string tag, object msg)
+    protected override void OnMessageReceive(int tag, object msg)
     {
         if(IsLocal)
-            return;
-
-        _datas[(DataEnum)int.Parse(tag)] = msg;
+            ClientReceiveMessage(tag, msg);
+        else
+            HostReceiveMessage(tag, msg);        
         // print($"LabDeviceChannel RECV [{tag}] {msg}");
-    }
+    }    
 
-/* -------------------------------------------------------------------------- */
     
+
+    /* -------------------------------------------------------------------------- */
+
     /// <summary>
-    /// Could be null!
+    /// Get Current retrieved data by type.
+    /// If not found, return null!
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
@@ -95,10 +111,10 @@ public partial class LabDeviceChannel : LokaChannel
     }
 
     /// <summary>
-    /// Could be null!
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
+    /// Get Current retrieved data by type and Data key.
+    /// If not found, return null!
+    /// <typeparam name="T">The type</typeparam>
+    /// <param name="key">the key</param>
     /// <returns></returns>
     public T GetData<T>(DataEnum key)
     {
@@ -107,23 +123,9 @@ public partial class LabDeviceChannel : LokaChannel
             // Debug.LogWarning($"[LabDeviceChannel] GetData: Key not found: {key}, returning default value (null).");
             return default;
         }
+
+        if(_datas[key] is JObject)
+            return ((JObject)_datas[key]).ToObject<T>();
         return (T)_datas[key];
     }
-
-/* -------------------------------------------------------------------------- */
 }
-
-// public class LokaLabDeviceData
-// {
-//     public bool Ganglion_IsConnected;
-//     public Ganglion_EEGData Ganglion_EEGData;
-//     public Ganglion_ImpedanceData Ganglion_ImpedanceData;
-
-//     public bool EyeTrack_IsAvailable;
-//     public EyeLeftRightData EyeTrack_EyeLeftRightData;
-//     public EyeCombinedData EyeTrack_CombinedData;
-//     public EyeFocusData EyeTrack_EyeFocusData;
-
-//     public bool BreathStrap_IsConnected;
-//     public BreathStrapData BreathStrap_BreathData;
-// }

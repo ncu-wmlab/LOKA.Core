@@ -7,13 +7,13 @@ public class SceneControlChannel : LokaChannel
     // public bool IsHost = false; // use "local" instead
     [SerializeField] Camera _camera;
 
-    protected override void MessageReceived(string tag, object msg)
+    protected override void OnMessageReceive(int tag, object msg)
     {
         // ignore if not 
         if(!IsLocal)
             return;
 
-        if(tag == "FOV")
+        if(tag == 26000)
         {
             _camera.fieldOfView = (float)(double)msg;
         }
@@ -23,6 +23,8 @@ public class SceneControlChannel : LokaChannel
 
     public void SendFov(float fov)
     {
-        SendMessage("FOV", fov);
+        Send(26000, fov);
     }
+
+    
 }

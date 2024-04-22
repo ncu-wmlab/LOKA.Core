@@ -47,22 +47,21 @@ public partial class LabDeviceChannel : LokaChannel
         }
         catch (Exception e)
         {
-            Debug.LogWarning("[LabDevicePanel] Error fetching Ganglion Data: " + e);
+            // Debug.LogWarning("[LabDevicePanel] Error fetching Ganglion Data: " + e);
         }
 
         // EyeTrack
-        // FIXME
-        // try
-        // {
-        //     ClientSendMessage(DataEnum.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
-        //     ClientSendMessage(DataEnum.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
-        //     ClientSendMessage(DataEnum.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
-        //     // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());
-        // }
-        // catch (Exception e)
-        // {
-        //     Debug.LogWarning("[LabDevicePanel] Error fetching EyeTrack Data: " + e);
-        // }
+        try
+        {
+            ClientSendMessage(DataEnum.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
+            ClientSendMessage(DataEnum.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
+            ClientSendMessage(DataEnum.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
+            // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());
+        }
+        catch (Exception e)
+        {
+            // Debug.LogWarning("[LabDevicePanel] Error fetching EyeTrack Data: " + e);
+        }
 
         // Breath
         try
@@ -72,7 +71,7 @@ public partial class LabDeviceChannel : LokaChannel
         }
         catch (Exception e)
         {
-            Debug.LogWarning("[LabDevicePanel] Error fetching Breath Data: " + e);
+            // Debug.LogWarning("[LabDevicePanel] Error fetching Breath Data: " + e);
         }
     }
 
@@ -80,11 +79,42 @@ public partial class LabDeviceChannel : LokaChannel
     {
         _datas[tag] = msg;
 
-        // TODO ignroe duplication
-
+        // TODO ignore duplication
         if (IsConnected && msg != null)
         {
-            SendMessage(((int)tag).ToString(), msg);
+            Send((int)tag, msg);
+        }
+    }
+
+    private void ClientReceiveMessage(int tag, object msg)
+    {
+        LabDeviceOp dataEnum = (LabDeviceOp)tag;
+        switch(dataEnum)
+        {
+            case LabDeviceOp.GANGLION_DO_CONNECT:
+                if((bool)msg)
+                    GanglionManager.Instance.ManualConnect();
+                else
+                    GanglionManager.Instance.ManualDisconnect();
+                break;
+            case LabDeviceOp.GANGLION_RECEIVE_EEG:
+                if((bool)msg)
+                    GanglionManager.Instance.StreamData();
+                else
+                    GanglionManager.Instance.StopStreamData();
+                break;
+            case LabDeviceOp.GANGLION_RECEIVE_IMPEDANCE:
+                if((bool)msg)
+                    GanglionManager.Instance.StreamImpedance();
+                else
+                    GanglionManager.Instance.StopStreamImpedance();
+                break;
+            case LabDeviceOp.BREATHSTRAP_DO_CONNECT:
+                if((bool)msg)
+                    BreathStrapManager.Instance.Connect();
+                else
+                    BreathStrapManager.Instance.Disconnect();
+                break;
         }
     }
 }
