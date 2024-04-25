@@ -35,7 +35,7 @@ public abstract class LokaChannel : DataChannelBase
         Message msg = JsonConvert.DeserializeObject<Message>(msgStr);
         // if(msg == null || msg.T == null) 
         //     return;
-        Debug.Log($"LokaChannel{{{GetType()}}} RECV {msg.T}: {msg.M}");
+        // Debug.Log($"LokaChannel{{{GetType()}}} RECV {msg.T}: {msg.M}");
         OnMessageReceive(msg.T, msg.M);
     }
 
@@ -61,7 +61,7 @@ public abstract class LokaChannel : DataChannelBase
                 Formatting = Formatting.None,
                 FloatParseHandling = FloatParseHandling.Decimal
             });
-        Debug.Log($"LokaChannel{{{GetType()}}} SEND {tag}: {msg}");
+        // Debug.Log($"LokaChannel{{{GetType()}}} SEND {tag}: {msg}");
         Send(m);
     }
 

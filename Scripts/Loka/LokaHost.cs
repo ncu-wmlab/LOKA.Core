@@ -55,7 +55,7 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
 
         // Add Player to the scene
         var newPlayer = Instantiate(_playerPrefab);
-        newPlayer.Init(eventData.connectionId);
+        newPlayer.Init(eventData.connectionId);  // Init player
         _connectedPlayers.Add(eventData.connectionId, newPlayer);
 
         // Register Senders
@@ -71,6 +71,8 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         {
             AddChannel(eventData.connectionId, channel);            
         }
+
+        newPlayer.LateInit();
 
         SendAnswer(eventData.connectionId);
         OnPlayerJoin?.Invoke(newPlayer);

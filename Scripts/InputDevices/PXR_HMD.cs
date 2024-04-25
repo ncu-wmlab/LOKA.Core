@@ -107,6 +107,19 @@ public class PXR_HMD : XRHMD
     [InputControl]
     public Vector3Control centerEyeAngularAcceleration { get; private set; }
 
+    // JC
+    [Preserve]
+    [InputControl]
+    public Vector3Control combinedEyeGazeVector { get; private set; }
+    [Preserve]
+    [InputControl]
+    public AxisControl leftEyeOpenness { get; private set; }
+    [Preserve]
+    [InputControl]
+    public AxisControl rightEyeOpenness { get; private set; }
+    
+
+
 
     protected override void FinishSetup()
     {
@@ -139,6 +152,10 @@ public class PXR_HMD : XRHMD
         centerEyeAngularVelocity = GetChildControl<Vector3Control>("centerEyeAngularVelocity");
         centerEyeAcceleration = GetChildControl<Vector3Control>("centerEyeAcceleration");
         centerEyeAngularAcceleration = GetChildControl<Vector3Control>("centerEyeAngularAcceleration");
+
+        combinedEyeGazeVector = GetChildControl<Vector3Control>("combinedeyegazevector");
+        leftEyeOpenness = GetChildControl<AxisControl>("lefteyeopenness");
+        rightEyeOpenness = GetChildControl<AxisControl>("righteyeopenness");
     }
 }
 

@@ -51,17 +51,17 @@ public partial class LabDeviceChannel : LokaChannel
         }
 
         // EyeTrack
-        try
-        {
-            ClientSendMessage(DataEnum.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
-            ClientSendMessage(DataEnum.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
-            ClientSendMessage(DataEnum.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
-            // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());
-        }
-        catch (Exception e)
-        {
-            // Debug.LogWarning("[LabDevicePanel] Error fetching EyeTrack Data: " + e);
-        }
+        // try
+        // {
+        //     ClientSendMessage(DataEnum.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
+        //     ClientSendMessage(DataEnum.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
+        //     ClientSendMessage(DataEnum.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
+        //     // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());
+        // }
+        // catch (Exception e)
+        // {
+        //     // Debug.LogWarning("[LabDevicePanel] Error fetching EyeTrack Data: " + e);
+        // }
 
         // Breath
         try
