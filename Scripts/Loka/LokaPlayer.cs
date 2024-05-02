@@ -5,6 +5,8 @@ using Unity.RenderStreaming;
 using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.XR;
+using UnityEngine.XR.Hands;
 
 /// <summary>
 /// Host player. AKA. client controlled player in the host machine.
@@ -51,14 +53,21 @@ public class LokaPlayer : MonoBehaviour
     {
         // print all input devices and their controls 
         string s = "";
-        GetComponent<InputReceiver>().devices.ToList().ForEach(dev =>
+        InputReceiver?.devices.ToList().ForEach(dev =>
         {
-             s += $"\n<b>{dev.name}</b> ({dev.GetType()})\n";
-            if (dev is XRHMD)
+            s += $"\n<b>{dev.name}</b> ";
+            if(dev.usages.Count > 0)
             {
-            dev.allControls.ToList().ForEach(y => s += $"- {y.path}: {y.ReadValueAsObject()}\n");
+                s += $"({dev.usages[0]}) ";
+            }
+            s +=  $"<i>{dev.GetType()}</i>\n";
+            if (dev is XRHandDevice)
+            {
+                dev.allControls.ToList().ForEach(y => s += $"- {y.path}: {y.ReadValueAsObject()}\n");
             }
         });
-        print(s.Remove(0,1));
+
+        if(s.Length > 1)
+            print(s.Remove(0,1));
     }
 }
