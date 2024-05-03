@@ -43,6 +43,8 @@ public class LokaVREyetrack : MonoBehaviour
     /// </summary>
     public float RightEyeOpenness { get; private set;}
 
+    public XRHMD HmdDevice => _HMD;
+
     /* -------------------------------------------------------------------------- */
 
 

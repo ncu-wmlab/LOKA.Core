@@ -31,6 +31,9 @@ public class LokaVRHand : MonoBehaviour
     /// </summary>
     public bool IsRightHandTracked => _rightHandDevice != null && _rightHandDevice.trackingState.value != 0;
 
+    public XRHandDevice LeftHandDevice => _leftHandDevice;
+    public XRHandDevice RightHandDevice => _rightHandDevice;
+
     /* -------------------------------------------------------------------------- */
 
     LokaPlayer _lokaPlayer;
