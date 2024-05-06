@@ -28,6 +28,8 @@ public partial class LabDeviceChannel : LokaChannel
         BREATHSTRAP_ISAVAILABLE = 30,
         BREATHSTRAP_ISCONNECTED,
         BREATHSTRAP_BREATHDATA,
+        HAND_LEFT_JOINTS_POSE = 40,
+        HAND_RIGHT_JOINTS_POSE
     }
 
     // Host -> Client
@@ -124,8 +126,13 @@ public partial class LabDeviceChannel : LokaChannel
             return default;
         }
 
-        if(_datas[key] is JObject)
-            return ((JObject)_datas[key]).ToObject<T>();
+
+        // FIXME if we migrate from JSON.net, we need to change here :/
+        // print($"[{key}]  is " + _datas[key].GetType());
+        if(_datas[key] is JObject)  
+            return ((JObject)_datas[key]).ToObject<T>();  
+        if(_datas[key] is JArray)
+            return ((JArray)_datas[key]).ToObject<T>();
         return (T)_datas[key];
     }
 }

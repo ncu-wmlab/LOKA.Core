@@ -40,6 +40,9 @@ public class LokaVRHand : MonoBehaviour
     XRHandDevice _leftHandDevice;
     XRHandDevice _rightHandDevice;
 
+    List<GameObject> _leftHandJointTrackPos = new List<GameObject>(26);
+    List<GameObject> _rightHandJointTrackPos = new List<GameObject>(26);
+
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -47,7 +50,23 @@ public class LokaVRHand : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _lokaPlayer = GetComponent<LokaPlayer>();
+        _lokaPlayer = GetComponent<LokaPlayer>();        
+
+        // Create hand joint track objects
+        for(int handness = 0; handness < 2; handness++)
+        {
+            string handName = handness == 0 ? "Left" : "Right";
+            for(int i = XRHandJointID.BeginMarker.ToIndex(); i < XRHandJointID.EndMarker.ToIndex(); i++)
+            {
+                var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                go.transform.localScale = Vector3.one * 0.015f;            
+                go.SetActive(false);
+
+                go.transform.SetParent(handness == 0 ? LeftHandTransform : RightHandTransform);
+                go.name = $"{handName}HandJointTrackPos {i} ({XRHandJointIDUtility.FromIndex(i)})";
+                (handness == 0 ? _leftHandJointTrackPos : _rightHandJointTrackPos).Add(go);
+            }
+        }
     }
 
     /// <summary>
@@ -76,7 +95,7 @@ public class LokaVRHand : MonoBehaviour
             }
         }
 
-
+        // set hand pos
         if (_leftHandDevice != null)
         {
             LeftHandTransform.localPosition = _leftHandDevice.devicePosition.ReadValue();
@@ -87,5 +106,22 @@ public class LokaVRHand : MonoBehaviour
             RightHandTransform.localPosition = _rightHandDevice.devicePosition.ReadValue();
             RightHandTransform.rotation = _rightHandDevice.deviceRotation.ReadValue();
         }    
+
+        // set joint pos
+        var lHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.DataEnum.HAND_LEFT_JOINTS_POSE);
+        var rHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.DataEnum.HAND_RIGHT_JOINTS_POSE);
+        for(int i = 0; i < lHandJoints.Count; i++)
+        {
+            if(lHandJoints[i].HasValue)
+            {
+                _leftHandJointTrackPos[i].SetActive(true);
+                _leftHandJointTrackPos[i].transform.position = lHandJoints[i].Value.position - lHandJoints[0].Value.position + LeftHandTransform.position;
+                _leftHandJointTrackPos[i].transform.rotation = lHandJoints[i].Value.rotation;
+            }
+            else
+            {
+                _leftHandJointTrackPos[i].SetActive(false);
+            }
+        }        
     }
 }

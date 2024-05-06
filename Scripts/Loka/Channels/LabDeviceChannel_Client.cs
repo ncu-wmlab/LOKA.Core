@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.XR;
+using UnityEngine.XR.Hands;
 
 // CLIENT (LOCAL) CODE
 public partial class LabDeviceChannel : LokaChannel
@@ -39,40 +42,31 @@ public partial class LabDeviceChannel : LokaChannel
         if (!IsLocal)
             return;
 
-        // Ganglion
         try
         {
+            // Ganglion
             ClientSendMessage(DataEnum.GANGLION_ISAVAILABLE, true); // FIXME Ganglion_IsAvailable
-            ClientSendMessage(DataEnum.GANGLION_ISCONNECTED, GanglionManager.Instance.IsConnected);
-        }
-        catch (Exception e)
-        {
-            // Debug.LogWarning("[LabDevicePanel] Error fetching Ganglion Data: " + e);
-        }
+            ClientSendMessage(DataEnum.GANGLION_ISCONNECTED, GanglionManager.Instance.IsConnected);            
 
-        // EyeTrack
-        // try
-        // {
-        //     ClientSendMessage(DataEnum.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
-        //     ClientSendMessage(DataEnum.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
-        //     ClientSendMessage(DataEnum.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
-        //     // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());
-        // }
-        // catch (Exception e)
-        // {
-        //     // Debug.LogWarning("[LabDevicePanel] Error fetching EyeTrack Data: " + e);
-        // }
+            // EyeTrack
+            ClientSendMessage(DataEnum.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
+            ClientSendMessage(DataEnum.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
+            ClientSendMessage(DataEnum.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
+            // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());  // client 一般都對著投影看，沒有意義
 
-        // Breath
-        try
-        {
+            // Breath
             ClientSendMessage(DataEnum.BREATHSTRAP_ISAVAILABLE, true); // TODO Breath_IsAvailable
             ClientSendMessage(DataEnum.BREATHSTRAP_ISCONNECTED, BreathStrapManager.Instance.IsConnected());
+  
+            // Hands
+            ClientSendMessage(DataEnum.HAND_LEFT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Left));
+            ClientSendMessage(DataEnum.HAND_RIGHT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Right));
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            // Debug.LogWarning("[LabDevicePanel] Error fetching Breath Data: " + e);
+            Debug.LogError($"[LabDeviceChannel_Client] {e}");
         }
+ 
     }
 
     private void ClientSendMessage(DataEnum tag, object msg)
