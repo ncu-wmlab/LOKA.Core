@@ -80,7 +80,7 @@ public class LokaVRHand : MonoBehaviour
         if (_leftHandDevice != null)
         {
             LeftHandTransform.localPosition = _leftHandDevice.devicePosition.ReadValue();
-            LeftHandTransform.rotation = _leftHandDevice.deviceRotation.ReadValue();
+            LeftHandTransform.rotation = _leftHandDevice.deviceRotation.ReadValue();                        
         }
         if (_rightHandDevice != null)
         {

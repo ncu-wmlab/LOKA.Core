@@ -15,7 +15,7 @@ using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 public class LokaPlayerVR : LokaPlayer
 {   
     // RenderStreaming 會複製一個 InputAction mapping, 但是原本關連到的 InputAction 不會更新。因此需要重新指定。
-    [Header("XRInputAction re-mapping")]
+    [Header("XRInputAction Remapping")]
     [SerializeField] ActionBasedSnapTurnProvider _xrOrigin_snapTurnProvider;
     [SerializeField] ActionBasedContinuousTurnProvider _xrOrigin_continuousTurnProvider;
     [SerializeField] ActionBasedContinuousMoveProvider _xrOrigin_moveProvider;
@@ -29,14 +29,25 @@ public class LokaPlayerVR : LokaPlayer
     
     /* -------------------------------------------------------------------------- */
     
+    [Header("Track Pos (VRIK 綁骨架用，可自由微調這些追蹤點的位置/旋轉)")]
     public Transform HeadTrackTransform;
     public Transform LeftHandTrackTransform;
     public Transform RightHandTrackTransform;
+    public Transform LeftControllerTrackTransform;
+    public Transform RightControllerTrackTransform;
+
+    /// <summary>
+    /// 手部追蹤 (若有)
+    /// </summary>
+    public LokaVRHand Hands { get; private set; }
+
+    /// <summary>
+    /// 眼動追蹤 (若有)
+    /// </summary>
+    public LokaVREyetrack Eyetrack { get; private set; }
 
 
     /* -------------------------------------------------------------------------- */
-
-
 
     public override void LateInit()
     {
@@ -113,6 +124,9 @@ public class LokaPlayerVR : LokaPlayer
         {
             _rightHandGrabMoveProvider.grabMoveAction = RemapInputAction(_rightHandGrabMoveProvider.grabMoveAction);
         }
+
+        Hands = GetComponent<LokaVRHand>();
+        Eyetrack = GetComponent<LokaVREyetrack>();
     }
 
     /// <summary>
@@ -135,12 +149,12 @@ public class LokaPlayerVR : LokaPlayer
     InputAction RemapInputAction(InputAction old)
     {
         var newAction = InputReceiver.actions.FindAction(old.id);
-        // Debug.Log($"[LokaPlayer] Map InputAsset {old.name} ({old.id}) to {newAction.name} ({newAction.id}). ");
         if (newAction == null)
         {
-            Debug.LogError($"[LokaPlayer] Cannot map InputAsset {old.name} ({old.id}). Will use the origin one, which could have no effect or everyone share the same input!!");
+            Debug.LogError($"[LokaPlayerVR] Cannot map InputAsset {old.name} ({old.id}) to new. Will use the origin one, which could have no effect or everyone share the same input!!");
             return old;
         }
+        Debug.Log($"[LokaPlayerVR] Map InputAsset {old.name} ({old.id}) to {newAction.name} ({newAction.id}). ");
         return newAction;
     }
 }

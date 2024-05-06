@@ -136,7 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6772659833189669474}
   m_Layer: 0
-  m_Name: LeftHandTrackPos
+  m_Name: LeftControllerTrackPos
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -465,7 +465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3990522885542675403}
   m_Layer: 0
-  m_Name: RightHandTrackPos
+  m_Name: RightControllerTrackPos
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -706,8 +706,10 @@ MonoBehaviour:
   _rightHandXrController: {fileID: 7533806627936375398}
   _rightHandGrabMoveProvider: {fileID: 6021736322602287669}
   HeadTrackTransform: {fileID: 6486836101544390649}
-  LeftHandTrackTransform: {fileID: 6772659833189669474}
-  RightHandTrackTransform: {fileID: 3990522885542675403}
+  LeftHandTrackTransform: {fileID: 7601475181809136767}
+  RightHandTrackTransform: {fileID: 6892434167100327479}
+  LeftControllerTrackTransform: {fileID: 6772659833189669474}
+  RightControllerTrackTransform: {fileID: 3990522885542675403}
 --- !u!114 &6743755646594412184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1000,7 +1002,7 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 533aeb95-18b2-4a83-a69d-f6e0be72ff8a
     m_ActionName: XRI UI/RightClick[/Mouse/rightButton]
-  m_DefaultActionMap: XRI Head
+  m_DefaultActionMap: 
 --- !u!114 &8808259370055985005
 MonoBehaviour:
   m_ObjectHideFlags: 0
