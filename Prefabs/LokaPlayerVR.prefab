@@ -1002,7 +1002,7 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 533aeb95-18b2-4a83-a69d-f6e0be72ff8a
     m_ActionName: XRI UI/RightClick[/Mouse/rightButton]
-  m_DefaultActionMap: 
+  m_DefaultActionMap: XRI Head
 --- !u!114 &8808259370055985005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1085,6 +1085,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftHandTransform: {fileID: 1501792245075245669}
   RightHandTransform: {fileID: 2765206152520105156}
+  HandSizeOffset: 1
+  DisplayHandJointCube: 1
 --- !u!1001 &6958229315370281922
 PrefabInstance:
   m_ObjectHideFlags: 0

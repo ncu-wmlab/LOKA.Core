@@ -36,7 +36,7 @@ public class LocalHandJointsManager : MonoBehaviour
         }
         
         if(xrOriginPos == null)
-            Debug.LogWarning("LocalHandJointsManager: xrOriginPos is not set. Hand joints will be in Real-world space.");
+            Debug.LogWarning("LocalHandJointsManager: xrOriginPos is not set. Hand joints will be in Real-world coordinate.");
         // if (m_HandSubsystem != null)
         //     m_HandSubsystem.updatedHands += OnUpdatedHands;
     }
