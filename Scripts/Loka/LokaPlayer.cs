@@ -41,7 +41,7 @@ public class LokaPlayer : MonoBehaviour
     /// </summary>
     public virtual void LateInit()
     {
-        InputReceiver = GetComponent<InputReceiver>();
+        InputReceiver = GetComponentInChildren<InputReceiver>();
     }
 
     /* -------------------------------------------------------------------------- */

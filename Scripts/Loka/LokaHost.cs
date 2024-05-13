@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.RenderStreaming;
 using System.Linq;
 using UnityEngine.Events;
+using System;
 
 /// <summary>
 /// LOKA Host Signal Handler
@@ -30,8 +31,14 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
     /* -------------------------------------------------------------------------- */
     /* -------------------------------------------------------------------------- */
 
+    /// <summary>
+    /// 玩家加入事件。會在玩家物件建立完成後觸發
+    /// </summary>
     public event UnityAction<LokaPlayer> OnPlayerJoin;
-    public event UnityAction<string> OnPlayerExit;
+    /// <summary>
+    /// 玩家離開事件。會在玩家物件刪除前觸發
+    /// </summary>
+    public event UnityAction<LokaPlayer> OnPlayerExit;
 
     /* -------------------------------------------------------------------------- */
 
@@ -59,7 +66,7 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         _connectedPlayers.Add(eventData.connectionId, newPlayer);
 
         // Register Senders
-        var sender = newPlayer.GetComponentsInChildren<StreamSenderBase>();
+        var sender = newPlayer.GetComponentsInChildren<StreamSenderBase>();  // webrtc tracks
         foreach(var s in sender)
         {
             AddSender(eventData.connectionId, s);
@@ -113,9 +120,16 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         // Remove Player from the scene
         Debug.Log("[LokaSignalHandler] Remove Connection: " + connectionId);
         var player = _connectedPlayers[connectionId];
-        Destroy(player.gameObject);
         _connectedPlayers.Remove(connectionId);
         _connectionIds.Remove(connectionId);
-        OnPlayerExit?.Invoke(connectionId);
+        try
+        {
+            OnPlayerExit?.Invoke(player);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+        Destroy(player.gameObject);
     }
 }
