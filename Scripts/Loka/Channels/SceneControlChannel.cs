@@ -9,13 +9,14 @@ public class SceneControlChannel : LokaChannel
 
     protected override void OnMessageReceive(int tag, object msg)
     {
-        // ignore if not 
-        if(!IsLocal)
+        // ignore if not host
+        if(IsLocal)
             return;
 
         if(tag == 26000)
         {
             _camera.fieldOfView = (float)(double)msg;
+            print($"FOV: {_camera.fieldOfView}");
         }
     }
 

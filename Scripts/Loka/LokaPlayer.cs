@@ -51,7 +51,8 @@ public class LokaPlayer : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // print all input devices and their controls 
+#if UNITY_EDITOR
+        // FIXME print all input devices and their controls: Remove on production!
         string s = "";
         InputReceiver?.devices.ToList().ForEach(dev =>
         {
@@ -69,5 +70,6 @@ public class LokaPlayer : MonoBehaviour
 
         if(s.Length > 1)
             print(s.Remove(0,1));
+#endif
     }
 }

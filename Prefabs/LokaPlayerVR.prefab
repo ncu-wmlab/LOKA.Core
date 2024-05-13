@@ -1086,6 +1086,8 @@ MonoBehaviour:
   LeftHandTransform: {fileID: 1501792245075245669}
   RightHandTransform: {fileID: 2765206152520105156}
   HandSizeOffset: 1
+  LeftHandJointRotationOffset: {x: 0, y: 90, z: 0}
+  RightHandJointRotationOffset: {x: 0, y: -90, z: 0}
   DisplayHandJointCube: 1
 --- !u!1001 &6958229315370281922
 PrefabInstance:
@@ -1150,6 +1152,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6073282543337632998, guid: eff48629924ff024198072ab58e647c7, type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 7533806627833164517}
     - target: {fileID: 7643426503833679691, guid: eff48629924ff024198072ab58e647c7, type: 3}
       propertyPath: local
       value: 0
@@ -1222,7 +1228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1178791450436251564, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_RequestedTrackingOriginMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Name
