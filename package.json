@@ -1,6 +1,6 @@
 {
     "name": "com.xrlab.loka",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "displayName": "LOKA (Host)",
     "description": "NCU WMLAB/XRLAB VR Streaming Solution",
     "unity": "2020.3",

@@ -32,12 +32,13 @@ public abstract class LokaChannel : DataChannelBase
 
     protected override void OnMessage(byte[] bytes)
     {
-        base.OnMessage(bytes);
+        base.OnMessage(bytes);        
         string msgStr = System.Text.Encoding.UTF8.GetString(bytes);
+        // Debug.Log($"[{GetType()}] <color=#1abc9c>RECVRAW</color>  (Len={bytes.Length}) ({msgStr.Length}) {msgStr} ");  
         Message msg = JsonConvert.DeserializeObject<Message>(msgStr);
         // if(msg == null || msg.T == null) 
         //     return;
-        Debug.Log($"LokaChannel{{{GetType()}}} RECV {msg.T}: {msg.M}");
+        Debug.Log($"[{GetType()}] <color=#1abc9c>RECV</color>  {msg.T}: {msg.M} (Len={bytes.Length})");  // FIXME Logging should be removed in production
         OnMessageReceive(msg.T, msg.M);
     }
 
@@ -67,7 +68,8 @@ public abstract class LokaChannel : DataChannelBase
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 ContractResolver = new WritablePropertiesOnlyResolver(),
             });
-        // Debug.Log($"LokaChannel{{{GetType()}}} SEND {tag}: {msg}");
+        Debug.Log($"[{GetType()}] <color=#e67e22>SEND</color> {tag}: {msg}");  // FIXME Logging should be removed in production
+        // Debug.Log($"[{GetType()}] <color=#e67e22>SENDRAW</color> (Len={m.Length}) {m}");  
         Send(m);
     }
 
