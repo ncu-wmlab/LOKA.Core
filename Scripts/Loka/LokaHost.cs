@@ -11,7 +11,10 @@ using System;
 /// (Receives Signals from signal server)
 /// </summary>
 [RequireComponent(typeof(SignalingManager))]
-public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler, IDisconnectHandler, IDeletedConnectionHandler, IAddReceiverHandler
+public class LokaHost : SignalingHandlerBase, 
+    IOfferHandler, 
+    IAddReceiverHandler, IAddChannelHandler, 
+    IDisconnectHandler, IDeletedConnectionHandler 
 {
     [Header("Prefabs")]
     [SerializeField] LokaPlayer _playerPrefab;
@@ -29,7 +32,6 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
     public Dictionary<string, LokaPlayer> ConnectedPlayers => _connectedPlayers;
 
     /* -------------------------------------------------------------------------- */
-    /* -------------------------------------------------------------------------- */
 
     /// <summary>
     /// 玩家加入事件。會在玩家物件建立完成後觸發
@@ -42,7 +44,6 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
 
     /* -------------------------------------------------------------------------- */
 
-
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
@@ -51,14 +52,17 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         GetComponent<SignalingManager>().Run(null, new SignalingHandlerBase[]{this});
     }
 
+    /* -------------------------------------------------------------------------- */
+
     public void OnOffer(SignalingEventData eventData)
     {
+        SendAnswer(eventData.connectionId);
         if(_connectionIds.Contains(eventData.connectionId))
         {
-            Debug.LogWarning("[LokaSignalHandler] Connection already exists: " + eventData.connectionId);
+            Debug.LogWarning("[LokaHost] Connection already exists: " + eventData.connectionId);
             return;
         }
-        print($"[LokaSignalHandler] Accepted Offer {eventData.connectionId}");
+        print($"[LokaHost] Accepted Offer {eventData.connectionId}");
         _connectionIds.Add(eventData.connectionId);
 
         // Add Player to the scene
@@ -66,14 +70,12 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         newPlayer.Init(eventData.connectionId);  // Init player
         _connectedPlayers.Add(eventData.connectionId, newPlayer);
 
-        // Register Senders
+        // Register Senders/Channels
         var sender = newPlayer.GetComponentsInChildren<StreamSenderBase>();  // webrtc tracks
         foreach(var s in sender)
         {
             AddSender(eventData.connectionId, s);
         }
-
-        // Register Channels
         var channels = newPlayer.GetComponentsInChildren<IDataChannel>();
         foreach(var channel in channels)
         {
@@ -81,12 +83,13 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         }
 
         newPlayer.LateInit();
-        SendAnswer(eventData.connectionId);
+        // SendAnswer(eventData.connectionId);
         OnPlayerJoin?.Invoke(newPlayer);
     }
 
     public void OnAddReceiver(SignalingEventData eventData)
     {
+        // Register Receivers
         var player = _connectedPlayers[eventData.connectionId];
         var track = eventData.transceiver.Receiver.Track;
         StreamReceiverBase receiver;
@@ -101,7 +104,12 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         else 
             throw new NotSupportedException("[LokaHost] Unsupported track kind: " + track.Kind);
         
-        SetReceiver(eventData.connectionId, receiver, eventData.transceiver);
+        SetReceiver(eventData.connectionId, receiver, eventData.transceiver);       
+        if(track.Kind == Unity.WebRTC.TrackKind.Audio)
+        {
+            ((AudioStreamReceiver)receiver).targetAudioSource.loop = true;
+            ((AudioStreamReceiver)receiver).targetAudioSource.Play();
+        } 
         Debug.Log($"[LokaHost] Add Track Kind={track.Kind} Id={eventData.connectionId} ");
     }
 
@@ -123,8 +131,10 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         RemoveConnection(eventData.connectionId);
     }
 
+    /* -------------------------------------------------------------------------- */
+
     /// <summary>
-    /// When Guest Disconnect
+    /// When a Client Disconnect (Gracefully or Unexpectedly)
     /// </summary>
     /// <param name="connectionId"></param>
     void RemoveConnection(string connectionId) 
