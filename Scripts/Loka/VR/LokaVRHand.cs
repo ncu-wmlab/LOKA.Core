@@ -141,6 +141,8 @@ public class LokaVRHand : MonoBehaviour
             // Debug.Log($"{handTransform.localPosition} = {handJoints[0].Value.position} Dist={Vector3.Distance(handTransform.localPosition, handJoints[0].Value.position)}");
             foreach(var joint in handTrackPos)
             {
+                if(handJoints == null)
+                    continue;
                 var jointPose = handJoints[joint.Key.ToIndex()];
                 if (jointPose.HasValue)
                 {

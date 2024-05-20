@@ -11,7 +11,7 @@ using System;
 /// (Receives Signals from signal server)
 /// </summary>
 [RequireComponent(typeof(SignalingManager))]
-public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler, IDisconnectHandler, IDeletedConnectionHandler
+public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler, IDisconnectHandler, IDeletedConnectionHandler, IAddReceiverHandler
 {
     [Header("Prefabs")]
     [SerializeField] LokaPlayer _playerPrefab;
@@ -58,6 +58,7 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
             Debug.LogWarning("[LokaSignalHandler] Connection already exists: " + eventData.connectionId);
             return;
         }
+        print($"[LokaSignalHandler] Accepted Offer {eventData.connectionId}");
         _connectionIds.Add(eventData.connectionId);
 
         // Add Player to the scene
@@ -80,18 +81,36 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         }
 
         newPlayer.LateInit();
-
         SendAnswer(eventData.connectionId);
         OnPlayerJoin?.Invoke(newPlayer);
     }
 
+    public void OnAddReceiver(SignalingEventData eventData)
+    {
+        var player = _connectedPlayers[eventData.connectionId];
+        var track = eventData.transceiver.Receiver.Track;
+        StreamReceiverBase receiver;
+        if(track.Kind == Unity.WebRTC.TrackKind.Video)
+        {
+            receiver = player.GetComponentsInChildren<VideoStreamReceiver>().FirstOrDefault();
+        }
+        else if(track.Kind == Unity.WebRTC.TrackKind.Audio)
+        {
+            receiver = player.GetComponentsInChildren<AudioStreamReceiver>().FirstOrDefault();
+        }
+        else 
+            throw new NotSupportedException("[LokaHost] Unsupported track kind: " + track.Kind);
+        
+        SetReceiver(eventData.connectionId, receiver, eventData.transceiver);
+        Debug.Log($"[LokaHost] Add Track Kind={track.Kind} Id={eventData.connectionId} ");
+    }
+
     public void OnAddChannel(SignalingEventData eventData)
     {
-        print($"[LokaSignalHandler] Add channel {eventData.connectionId}");
-        var go = _connectedPlayers[eventData.connectionId];
-        var channels = go.GetComponentsInChildren<IDataChannel>();
-        var channel = channels.FirstOrDefault(c => !c.IsLocal && !c.IsConnected);
+        var player = _connectedPlayers[eventData.connectionId];
+        var channel = player.GetComponentsInChildren<IDataChannel>().FirstOrDefault(c => !c.IsLocal && !c.IsConnected);
         channel?.SetChannel(eventData);
+        print($"[LokaHost] Add channel Label={channel?.Label} Id={eventData.connectionId}");
     }
 
     public void OnDeletedConnection(SignalingEventData eventData)
@@ -119,9 +138,8 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
 
         // Remove Player from the scene
         Debug.Log("[LokaSignalHandler] Remove Connection: " + connectionId);
-        var player = _connectedPlayers[connectionId];
-        _connectedPlayers.Remove(connectionId);
-        _connectionIds.Remove(connectionId);
+
+        var player = _connectedPlayers[connectionId];        
         try
         {
             OnPlayerExit?.Invoke(player);
@@ -130,6 +148,20 @@ public class LokaHost : SignalingHandlerBase, IOfferHandler, IAddChannelHandler,
         {
             Debug.LogError(e);
         }
+
+        // foreach(var sender in player.GetComponentsInChildren<StreamSenderBase>())
+        // {
+        //     RemoveSender(connectionId, sender);
+        // }
+        // foreach(var receiver in player.GetComponentsInChildren<StreamReceiverBase>())
+        // {
+        //     RemoveReceiver(connectionId, receiver);
+        // }
+        // foreach(var channel in player.GetComponentsInChildren<IDataChannel>())
+        // {
+        //     RemoveChannel(connectionId, channel);
+        // }      
+
         Destroy(player.gameObject);
-    }
+    }    
 }

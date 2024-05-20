@@ -17,10 +17,27 @@ public class LokaPlayer : MonoBehaviour
     // [Header("Runtime")]    
     public string ConnectionId { get; private set; }
     
+    /// <summary>
+    /// 
+    /// </summary>
     public SceneControlChannel SceneControlChannel { get; private set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public LabDeviceChannel LabDeviceChannel { get; private set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public InputReceiver InputReceiver { get; private set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public VideoStreamReceiver VideoReceiver { get; private set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public AudioStreamReceiver AudioReceiver { get; private set; }
 
     /* -------------------------------------------------------------------------- */
 
@@ -40,8 +57,27 @@ public class LokaPlayer : MonoBehaviour
     /// (Called by LokaHost) On Connection Start, DataChannels established
     /// </summary>
     public virtual void LateInit()
-    {
+    {        
         InputReceiver = GetComponentInChildren<InputReceiver>();
+        VideoReceiver = GetComponentInChildren<VideoStreamReceiver>();
+        AudioReceiver = GetComponentInChildren<AudioStreamReceiver>();
+
+        // Register A/V Events
+        if(VideoReceiver)
+        {
+            VideoReceiver.OnUpdateReceiveTexture += (s) => {
+                // TODO
+                print("[LokaPlayer] Video Update");
+            };
+        }
+        if(AudioReceiver)
+        {
+            AudioReceiver.OnUpdateReceiveAudioSource += s => {
+                print("[LokaPlayer] Audio Update");
+                s.loop = true;
+                s.Play();
+            };
+        }
     }
 
     /* -------------------------------------------------------------------------- */
