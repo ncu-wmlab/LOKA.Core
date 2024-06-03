@@ -20,17 +20,17 @@ public partial class LabDeviceChannel : LokaChannel
         // Ganglion
         GanglionManager.Instance.OnEEGUpdated += (eegData) =>
         {
-            ClientSendMessage(DataEnum.GANGLION_EEGDATA, eegData);
+            ClientSendMessage(LabDeviceControl.GANGLION_EEGDATA, eegData);
         };
         GanglionManager.Instance.OnImpedanceUpdated += (impedanceData) =>
         {
-            ClientSendMessage(DataEnum.GANGLION_IMPEDANCEDATA, impedanceData);
+            ClientSendMessage(LabDeviceControl.GANGLION_IMPEDANCEDATA, impedanceData);
         };
 
         // Breath
         BreathStrapManager.Instance.OnBreathValueUpdated += (breathData) =>
         {
-            ClientSendMessage(DataEnum.BREATHSTRAP_BREATHDATA, breathData);
+            ClientSendMessage(LabDeviceControl.BREATHSTRAP_BREATHDATA, breathData);
         };
     }
 
@@ -45,22 +45,22 @@ public partial class LabDeviceChannel : LokaChannel
         try
         {
             // Ganglion
-            ClientSendMessage(DataEnum.GANGLION_ISAVAILABLE, true); // FIXME Ganglion_IsAvailable
-            ClientSendMessage(DataEnum.GANGLION_ISCONNECTED, GanglionManager.Instance.IsConnected);            
+            ClientSendMessage(LabDeviceControl.GANGLION_ISAVAILABLE, true); // FIXME Ganglion_IsAvailable
+            ClientSendMessage(LabDeviceControl.GANGLION_ISCONNECTED, GanglionManager.Instance.IsConnected);            
 
             // EyeTrack
-            ClientSendMessage(DataEnum.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
-            ClientSendMessage(DataEnum.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
-            ClientSendMessage(DataEnum.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
+            ClientSendMessage(LabDeviceControl.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
+            ClientSendMessage(LabDeviceControl.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
+            ClientSendMessage(LabDeviceControl.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
             // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());  // client 一般都對著投影看，沒有意義
 
             // Breath
-            ClientSendMessage(DataEnum.BREATHSTRAP_ISAVAILABLE, true); // TODO Breath_IsAvailable
-            ClientSendMessage(DataEnum.BREATHSTRAP_ISCONNECTED, BreathStrapManager.Instance.IsConnected());
+            ClientSendMessage(LabDeviceControl.BREATHSTRAP_ISAVAILABLE, true); // TODO Breath_IsAvailable
+            ClientSendMessage(LabDeviceControl.BREATHSTRAP_ISCONNECTED, BreathStrapManager.Instance.IsConnected());
   
             // Hands
-            ClientSendMessage(DataEnum.HAND_LEFT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Left));
-            ClientSendMessage(DataEnum.HAND_RIGHT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Right));
+            ClientSendMessage(LabDeviceControl.HAND_LEFT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Left));
+            ClientSendMessage(LabDeviceControl.HAND_RIGHT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Right));
         }
         catch(Exception e)
         {
@@ -69,7 +69,7 @@ public partial class LabDeviceChannel : LokaChannel
  
     }
 
-    private void ClientSendMessage(DataEnum tag, object msg)
+    private void ClientSendMessage(LabDeviceControl tag, object msg)
     {
         _datas[tag] = msg;
 
@@ -82,28 +82,28 @@ public partial class LabDeviceChannel : LokaChannel
 
     private void ClientReceiveMessage(int tag, object msg)
     {
-        LabDeviceOp dataEnum = (LabDeviceOp)tag;
+        LabDeviceCommand dataEnum = (LabDeviceCommand)tag;
         switch(dataEnum)
         {
-            case LabDeviceOp.GANGLION_DO_CONNECT:
+            case LabDeviceCommand.GANGLION_DO_CONNECT:
                 if((bool)msg)
                     GanglionManager.Instance.ManualConnect();
                 else
                     GanglionManager.Instance.ManualDisconnect();
                 break;
-            case LabDeviceOp.GANGLION_RECEIVE_EEG:
+            case LabDeviceCommand.GANGLION_RECEIVE_EEG:
                 if((bool)msg)
                     GanglionManager.Instance.StreamData();
                 else
                     GanglionManager.Instance.StopStreamData();
                 break;
-            case LabDeviceOp.GANGLION_RECEIVE_IMPEDANCE:
+            case LabDeviceCommand.GANGLION_RECEIVE_IMPEDANCE:
                 if((bool)msg)
                     GanglionManager.Instance.StreamImpedance();
                 else
                     GanglionManager.Instance.StopStreamImpedance();
                 break;
-            case LabDeviceOp.BREATHSTRAP_DO_CONNECT:
+            case LabDeviceCommand.BREATHSTRAP_DO_CONNECT:
                 if((bool)msg)
                     BreathStrapManager.Instance.Connect();
                 else

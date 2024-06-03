@@ -10,12 +10,12 @@ public partial class LabDeviceChannel : LokaChannel
     /// <summary>
     /// _datas[dataName] = value_obj
     /// </summary>
-    Dictionary<DataEnum, object> _datas = new Dictionary<DataEnum, object>();
+    Dictionary<LabDeviceControl, object> _datas = new Dictionary<LabDeviceControl, object>();
 
 /* -------------------------------------------------------------------------- */
 
     // Usually Client -> Host
-    public enum DataEnum
+    public enum LabDeviceControl
     {
         GANGLION_ISAVAILABLE = 10,
         GANGLION_ISCONNECTED,
@@ -33,7 +33,7 @@ public partial class LabDeviceChannel : LokaChannel
     }
 
     // Host -> Client
-    public enum LabDeviceOp
+    public enum LabDeviceCommand
     {
         GANGLION_DO_CONNECT = 10010,
         GANGLION_RECEIVE_EEG,
@@ -90,17 +90,17 @@ public partial class LabDeviceChannel : LokaChannel
         switch(typeof(T).Name)
         {
             case "Ganglion_EEGData":
-                return GetData<T>(DataEnum.GANGLION_EEGDATA);
+                return GetData<T>(LabDeviceControl.GANGLION_EEGDATA);
             case "Ganglion_ImpedanceData":
-                return GetData<T>(DataEnum.GANGLION_IMPEDANCEDATA);
+                return GetData<T>(LabDeviceControl.GANGLION_IMPEDANCEDATA);
             case "EyeLeftRightData":
-                return GetData<T>(DataEnum.EYETRACK_EYELEFTRIGHTDATA);
+                return GetData<T>(LabDeviceControl.EYETRACK_EYELEFTRIGHTDATA);
             case "EyeCombinedData":
-                return GetData<T>(DataEnum.EYETRACK_COMBINEDDATA);
+                return GetData<T>(LabDeviceControl.EYETRACK_COMBINEDDATA);
             case "EyeFocusData":
-                return GetData<T>(DataEnum.EYETRACK_EYEFOCUSDATA);
+                return GetData<T>(LabDeviceControl.EYETRACK_EYEFOCUSDATA);
             case "BreathStrapData":
-                return GetData<T>(DataEnum.BREATHSTRAP_BREATHDATA);
+                return GetData<T>(LabDeviceControl.BREATHSTRAP_BREATHDATA);
         }
         
         // fallback
@@ -118,14 +118,13 @@ public partial class LabDeviceChannel : LokaChannel
     /// <typeparam name="T">The type</typeparam>
     /// <param name="key">the key</param>
     /// <returns></returns>
-    public T GetData<T>(DataEnum key)
+    public T GetData<T>(LabDeviceControl key)
     {
         if(!_datas.ContainsKey(key))
         {
             // Debug.LogWarning($"[LabDeviceChannel] GetData: Key not found: {key}, returning default value (null).");
             return default;
         }
-
 
         // FIXME if we migrate from JSON.net, we need to change here :/
         // print($"[{key}]  is " + _datas[key].GetType());

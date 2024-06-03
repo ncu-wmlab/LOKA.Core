@@ -36,6 +36,8 @@ public class LokaPlayerVR : LokaPlayer
     public Transform LeftControllerTrackTransform;
     public Transform RightControllerTrackTransform;
 
+    /* -------------------------------------------------------------------------- */
+
     /// <summary>
     /// 手部追蹤 (若有)
     /// </summary>

@@ -39,8 +39,8 @@ public class LabDevicePanel : BaseDictPanel
         // Ganglion
         try
         {
-            _SetMetric($"Ganglion", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.GANGLION_ISAVAILABLE));
-            bool ganglionIsConnected = _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.GANGLION_ISCONNECTED);
+            _SetMetric($"Ganglion", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.GANGLION_ISAVAILABLE));
+            bool ganglionIsConnected = _labDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.GANGLION_ISCONNECTED);
             _SetMetric($"Ganglion", "IsConnected", ganglionIsConnected);
             if (ganglionIsConnected)
             {
@@ -57,7 +57,7 @@ public class LabDevicePanel : BaseDictPanel
         // EyeTrack
         try
         {
-            _SetMetric($"EyeTrack", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.EYETRACK_ISAVAILABLE));
+            _SetMetric($"EyeTrack", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.EYETRACK_ISAVAILABLE));
             var eyeLeftRightData = _labDeviceChannel.GetData<EyeLeftRightData>();
             _SetMetric($"EyeTrack.EyeLeftRightData", "Timestamp", eyeLeftRightData?.Timestamp);
             _SetMetric($"EyeTrack.EyeLeftRightData", "LeftEyeOpenness", eyeLeftRightData?.LeftEyeOpenness);
@@ -83,9 +83,9 @@ public class LabDevicePanel : BaseDictPanel
         // Breath
         try
         {
-            _SetMetric($"BreathStrap", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.BREATHSTRAP_ISAVAILABLE));
-            _SetMetric($"BreathStrap", "IsConnected", _labDeviceChannel.GetData<bool>(LabDeviceChannel.DataEnum.BREATHSTRAP_ISCONNECTED));
-            _SetMetric($"BreathStrap", "BreathValue", _labDeviceChannel.GetData<BreathStrapData>(LabDeviceChannel.DataEnum.BREATHSTRAP_BREATHDATA)?.breathValue);
+            _SetMetric($"BreathStrap", "IsAvailable", _labDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.BREATHSTRAP_ISAVAILABLE));
+            _SetMetric($"BreathStrap", "IsConnected", _labDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.BREATHSTRAP_ISCONNECTED));
+            _SetMetric($"BreathStrap", "BreathValue", _labDeviceChannel.GetData<BreathStrapData>(LabDeviceChannel.LabDeviceControl.BREATHSTRAP_BREATHDATA)?.breathValue);
         }
         catch (Exception e)
         {
@@ -110,21 +110,21 @@ public class LabDevicePanel : BaseDictPanel
 
     public void RequestGanglionConnect(bool start)
     {
-        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceOp.GANGLION_DO_CONNECT, start);
+        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceCommand.GANGLION_DO_CONNECT, start);
     }
 
     public void RequestGanglionEEG(bool start)
     {
-        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceOp.GANGLION_RECEIVE_EEG, start);
+        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceCommand.GANGLION_RECEIVE_EEG, start);
     }
 
     public void RequestGanglionImpedance(bool start)
     {
-        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceOp.GANGLION_RECEIVE_IMPEDANCE, start);
+        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceCommand.GANGLION_RECEIVE_IMPEDANCE, start);
     }
 
     public void RequestBreathStrapConnect(bool start)
     {
-        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceOp.BREATHSTRAP_DO_CONNECT, start);
+        _labDeviceChannel.SendRequest(LabDeviceChannel.LabDeviceCommand.BREATHSTRAP_DO_CONNECT, start);
     }
 }

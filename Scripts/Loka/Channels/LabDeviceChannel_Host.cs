@@ -13,12 +13,12 @@ public partial class LabDeviceChannel : LokaChannel
 
     private void HostReceiveMessage(int tag, object msg)
     {
-        _datas[(DataEnum)tag] = msg;
+        _datas[(LabDeviceControl)tag] = msg;
     }
 
     /* -------------------------------------------------------------------------- */
 
-    public void SendRequest(LabDeviceOp op, object data)
+    public void SendRequest(LabDeviceCommand op, object data)
     {
         Send((int)op, data);
     }

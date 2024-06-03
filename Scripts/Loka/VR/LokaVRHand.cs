@@ -129,8 +129,8 @@ public class LokaVRHand : MonoBehaviour
         }
 
         // set joint pos
-        var lHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.DataEnum.HAND_LEFT_JOINTS_POSE);
-        var rHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.DataEnum.HAND_RIGHT_JOINTS_POSE);
+        var lHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_LEFT_JOINTS_POSE);
+        var rHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_RIGHT_JOINTS_POSE);
         for (int handness = 0; handness < 2; handness++)
         {
             var handJoints = handness == 0 ? lHandJoints : rHandJoints;
