@@ -71,8 +71,8 @@ public class LokaPlayerVR : LokaPlayer
 
         if (_mainCamera_PoseDriver != null)
         {
-            _mainCamera_PoseDriver.positionAction = RemapInputAction(_mainCamera_PoseDriver.positionAction);
-            _mainCamera_PoseDriver.rotationAction = RemapInputAction(_mainCamera_PoseDriver.rotationAction);
+            _mainCamera_PoseDriver.positionInput = RemapInputAction(_mainCamera_PoseDriver.positionInput);
+            _mainCamera_PoseDriver.rotationInput = RemapInputAction(_mainCamera_PoseDriver.rotationInput);
         }
 
         if (_leftHandControllerManager != null)
@@ -134,9 +134,15 @@ public class LokaPlayerVR : LokaPlayer
     /// </summary>
     /// <param name="old"></param>
     /// <returns></returns>
-    InputActionProperty RemapInputAction(InputActionProperty old)
+    public InputActionProperty RemapInputAction(InputActionProperty old)
     {
-        var newAction = RemapInputAction(old.action);
+        if(old.reference == null)
+        {
+            if(old.action != null)
+                return old;
+            throw new System.Exception("[LokaPlayerVR] InputActionProperty both action and reference is null.");
+        }
+        var newAction = RemapInputAction(old.reference);
         var newProp = new InputActionProperty(newAction);
         return newProp;
     }
@@ -146,15 +152,15 @@ public class LokaPlayerVR : LokaPlayer
     /// </summary>
     /// <param name="old"></param>
     /// <returns></returns>
-    InputAction RemapInputAction(InputAction old)
+    public InputAction RemapInputAction(InputActionReference old)
     {
-        var newAction = InputReceiver.actions.FindAction(old.id);
+        var newAction = InputReceiver.actions.FindAction(old.action.id);
         if (newAction == null)
         {
-            Debug.LogError($"[LokaPlayerVR] Cannot map InputAsset {old.name} ({old.id}) to new. Will use the origin one, which could have no effect or everyone share the same input!!");
+            Debug.LogError($"[LokaPlayerVR] Cannot map InputAsset {old.name} ({old.action.id}) to new. Will use the origin one, which could have no effect or everyone share the same input!!");
             return old;
         }
-        Debug.Log($"[LokaPlayerVR] Map InputAsset {old.name} ({old.id}) to {newAction.name} ({newAction.id}). ");
+        Debug.Log($"[LokaPlayerVR] Map InputAsset {old.name} ({old.action.id}) to {newAction.name} ({newAction.id}). ");
         return newAction;
     }
 }
