@@ -88,24 +88,24 @@ public class LokaPlayer : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
-        // FIXME print all input devices and their controls: Remove on production!
-        string s = "";
-        InputReceiver?.devices.ToList().ForEach(dev =>
-        {
-            s += $"\n<b>{dev.name}</b> ";
-            if(dev.usages.Count > 0)
-            {
-                s += $"({dev.usages[0]}) ";
-            }
-            s +=  $"<i>{dev.GetType()}</i>\n";
-            if (dev is XRHandDevice)
-            {
-                dev.allControls.ToList().ForEach(y => s += $"- {y.path}: {y.ReadValueAsObject()}\n");
-            }
-        });
+        // print all input devices and their controls: Remove on production!
+        // string s = "";
+        // InputReceiver?.devices.ToList().ForEach(dev =>
+        // {
+        //     s += $"\n<b>{dev.name}</b> ";
+        //     if(dev.usages.Count > 0)
+        //     {
+        //         s += $"({dev.usages[0]}) ";
+        //     }
+        //     s +=  $"<i>{dev.GetType()}</i>\n";
+        //     if (dev is XRHandDevice)
+        //     {
+        //         dev.allControls.ToList().ForEach(y => s += $"- {y.path}: {y.ReadValueAsObject()}\n");
+        //     }
+        // });
 
-        if(s.Length > 1)
-            print(s.Remove(0,1));
+        // if(s.Length > 1)
+        //     print(s.Remove(0,1));
 #endif
     }
 }

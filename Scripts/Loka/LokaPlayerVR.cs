@@ -154,15 +154,15 @@ public class LokaPlayerVR : LokaPlayer
     /// </summary>
     /// <param name="old"></param>
     /// <returns></returns>
-    public InputAction RemapInputAction(InputActionReference old)
+    public InputAction RemapInputAction(InputAction old)
     {
-        var newAction = InputReceiver.actions.FindAction(old.action.id);
+        var newAction = InputReceiver.actions.FindAction(old.id);
         if (newAction == null)
         {
-            Debug.LogError($"[LokaPlayerVR] Cannot map InputAsset {old.name} ({old.action.id}) to new. Will use the origin one, which could have no effect or everyone share the same input!!");
+            Debug.LogError($"[LokaPlayerVR] Cannot map InputAsset {old.name} ({old.id}) to new. Will use the origin one, which could have no effect or everyone share the same input!!");
             return old;
         }
-        Debug.Log($"[LokaPlayerVR] Map InputAsset {old.name} ({old.action.id}) to {newAction.name} ({newAction.id}). ");
+        Debug.Log($"[LokaPlayerVR] Map InputAsset {old.name} ({old.id}) to {newAction.name} ({newAction.id}). ");
         return newAction;
     }
 }
