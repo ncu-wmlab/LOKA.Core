@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.XR.Hands;
 
 [RequireComponent(typeof(LokaPlayer))]
-public class LokaVRHand : MonoBehaviour
+public class LokaVRHand : MonoBehaviour, ILokaVRDevice
 {
     /// <summary>
     /// Left hand tracked transform
@@ -65,12 +65,7 @@ public class LokaVRHand : MonoBehaviour
 
     /* -------------------------------------------------------------------------- */
 
-
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
-    void Start()
+    void Awake()
     {
         _lokaPlayer = GetComponent<LokaPlayer>();
 
@@ -94,25 +89,25 @@ public class LokaVRHand : MonoBehaviour
     /// LateUpdate is called every frame, if the Behaviour is enabled.
     /// It is called after all Update functions have been called.
     /// </summary>
-    void LateUpdate()
-    {
-        // Find devices
-        if (_leftHandDevice == null)
+    void Update()
+    {        
+        // if no hand device registered, try to find it
+        if(_leftHandDevice == null)
         {
-            var foundHand = _lokaPlayer.InputReceiver.devices.FirstOrDefault(
-                x => x is XRHandDevice && x.usages.Any(u => u.ToString().ToLower().Contains("left")));
-            if (foundHand != null)
+            var foundHandL = _lokaPlayer.InputReceiver.devices.FirstOrDefault(
+                x => x is XRHandDevice && x.usages.Any(u => u.ToString().ToLower().Contains("left")));  // FIXME magic string?
+            if (foundHandL != null)
             {
-                _leftHandDevice = (XRHandDevice)foundHand;
+                _leftHandDevice = (XRHandDevice)foundHandL;
             }
         }
-        if (_rightHandDevice == null)
+        if(_rightHandDevice == null)
         {
-            var foundHand = _lokaPlayer.InputReceiver.devices.FirstOrDefault(
-                x => x is XRHandDevice && x.usages.Any(u => u.ToString().ToLower().Contains("right")));
-            if (foundHand != null)
+            var foundHandR = _lokaPlayer.InputReceiver.devices.FirstOrDefault(
+                x => x is XRHandDevice && x.usages.Any(u => u.ToString().ToLower().Contains("right")));  // FIXME magic string?
+            if (foundHandR != null)
             {
-                _rightHandDevice = (XRHandDevice)foundHand;
+                _rightHandDevice = (XRHandDevice)foundHandR;
             }
         }
 
@@ -128,7 +123,7 @@ public class LokaVRHand : MonoBehaviour
             RightHandTransform.rotation = _rightHandDevice.deviceRotation.ReadValue();
         }
 
-        // set joint pos
+        // set joint pos (from LabDeviceChannel)
         var lHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_LEFT_JOINTS_POSE);
         var rHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_RIGHT_JOINTS_POSE);
         for (int handness = 0; handness < 2; handness++)

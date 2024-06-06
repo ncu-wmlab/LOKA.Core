@@ -48,6 +48,11 @@ public class LokaPlayerVR : LokaPlayer
     /// </summary>
     public LokaVREyetrack Eyetrack { get; private set; }
 
+    /// <summary>
+    /// 控制器 (若有)
+    /// </summary>
+    // public LokaVRController Controllers { get; private set; }
+
 
     /* -------------------------------------------------------------------------- */
 
@@ -129,6 +134,7 @@ public class LokaPlayerVR : LokaPlayer
 
         Hands = GetComponent<LokaVRHand>();
         Eyetrack = GetComponent<LokaVREyetrack>();
+        // Controllers = GetComponent<LokaVRController>();
     }
 
     /// <summary>

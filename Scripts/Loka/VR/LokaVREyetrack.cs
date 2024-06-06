@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(LokaPlayer))]
-public class LokaVREyetrack : MonoBehaviour
+public class LokaVREyetrack : MonoBehaviour, ILokaVRDevice
 {
     /// <summary>
     /// Eyes position (in front of face)
@@ -49,20 +49,21 @@ public class LokaVREyetrack : MonoBehaviour
 
 
     /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
+    /// Awake is called when the script instance is being loaded.
     /// </summary>
-    void Start()
+    void Awake()
     {
-        _player = GetComponent<LokaPlayer>();
+        _player = GetComponent<LokaPlayer>();        
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void LateUpdate()
+    public void RemapInputs()
     {
-        // find HMD device
+        
+    }
+
+    void LateUpdate()
+    {        
+        // if HMD not registered, try to find it
         if(_HMD == null)
         {
             var device = _player.InputReceiver.devices.FirstOrDefault(x => x is XRHMD);
@@ -70,7 +71,7 @@ public class LokaVREyetrack : MonoBehaviour
                 return;
             _HMD = (XRHMD)device;
         }
-        
+
         // Retrieve data of device type
         if (_HMD is PXR_HMD picoHmd)
         {
@@ -89,5 +90,5 @@ public class LokaVREyetrack : MonoBehaviour
             IsLeftEyeTracked = false;
             IsRightEyeTracked = false; 
         }
-    }
+    }    
 }
