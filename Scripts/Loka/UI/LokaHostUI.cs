@@ -19,8 +19,12 @@ public class LokaHostUI : MonoBehaviour
 
     [Header("Main Info Panel")]
     [SerializeField] GameObject _mainPanel;
-    [SerializeField] LabDevicePanel _labDevicePanel;
 
+    [Header("SubPanels")]
+    [SerializeField] LabDevicePanel _labDevicePanel;
+    [SerializeField] LokaInputActionsPanel _inputActionsPanel;
+
+    /* -------------------------------------------------------------------------- */
     LokaHost _host;
     LokaPlayer _currentFocusPlayer;
     Pose _initCameraPose;
@@ -72,22 +76,28 @@ public class LokaHostUI : MonoBehaviour
 
     /* -------------------------------------------------------------------------- */
 
+    /// <summary>
+    /// 當使用者關注一個 user 時，顯示其資訊
+    /// </summary>
+    /// <param name="player">player to focus. set null to unFocus</param>
     public void FocusPlayer(LokaPlayer player)
     {
         // 
         _currentFocusPlayer = player;
-
-        // unshow
+        
         if(player == null)
         {
+            // hide
             _mainPanel.gameObject.SetActive(false);
-            _labDevicePanel.Clear();            
-            return;
+            _labDevicePanel.OnHide();
+            _inputActionsPanel.OnHide();
         }
-
-        // show
-        _mainPanel.gameObject.SetActive(true);        
-        _labDevicePanel.SetLabDeviceChannel(player.LabDeviceChannel);
+        else
+        {
+            _mainPanel.gameObject.SetActive(true);
+            _labDevicePanel.OnShow(player);
+            _inputActionsPanel.OnShow(player);
+        }
     }
 
     public void UnfocusPlayer()
