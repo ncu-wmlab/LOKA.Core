@@ -78,6 +78,12 @@ public class LokaPlayer : MonoBehaviour
                 s.Play();
             };
         }
+
+        // Enable all input actions
+        foreach(var map in InputReceiver.actions.actionMaps)
+        {
+            map.Enable();
+        }
     }
 
     /* -------------------------------------------------------------------------- */
