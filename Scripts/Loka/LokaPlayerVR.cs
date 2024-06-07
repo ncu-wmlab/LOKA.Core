@@ -19,13 +19,13 @@ public class LokaPlayerVR : LokaPlayer
     [SerializeField] ActionBasedSnapTurnProvider _xrOrigin_snapTurnProvider;
     [SerializeField] ActionBasedContinuousTurnProvider _xrOrigin_continuousTurnProvider;
     [SerializeField] ActionBasedContinuousMoveProvider _xrOrigin_moveProvider;
-    [SerializeField] TrackedPoseDriver _mainCamera_PoseDriver;
     [SerializeField] ActionBasedControllerManager _leftHandControllerManager;
     [SerializeField] ActionBasedController _leftHandXrController;
     [SerializeField] GrabMoveProvider _leftHandGrabMoveProvider;
     [SerializeField] ActionBasedControllerManager _rightHandControllerManager;
     [SerializeField] ActionBasedController _rightHandXrController;
     [SerializeField] GrabMoveProvider _rightHandGrabMoveProvider;
+    [SerializeField] List<TrackedPoseDriver> _trackedPoseDrivers;
     
     /* -------------------------------------------------------------------------- */
     
@@ -74,13 +74,7 @@ public class LokaPlayerVR : LokaPlayer
         {
             _xrOrigin_moveProvider.leftHandMoveAction = RemapInputAction(_xrOrigin_moveProvider.leftHandMoveAction);
             _xrOrigin_moveProvider.rightHandMoveAction = RemapInputAction(_xrOrigin_moveProvider.rightHandMoveAction);
-        }
-
-        if (_mainCamera_PoseDriver != null)
-        {
-            _mainCamera_PoseDriver.positionInput = RemapInputAction(_mainCamera_PoseDriver.positionInput);
-            _mainCamera_PoseDriver.rotationInput = RemapInputAction(_mainCamera_PoseDriver.rotationInput);
-        }
+        }        
 
         if (_leftHandControllerManager != null)
         {
@@ -130,6 +124,15 @@ public class LokaPlayerVR : LokaPlayer
         if (_rightHandGrabMoveProvider != null)
         {
             _rightHandGrabMoveProvider.grabMoveAction = RemapInputAction(_rightHandGrabMoveProvider.grabMoveAction);
+        }
+
+        foreach(var driver in _trackedPoseDrivers)
+        {
+            if(!driver)
+                continue;
+            driver.positionInput = RemapInputAction(driver.positionInput);
+            driver.rotationInput = RemapInputAction(driver.rotationInput);
+            driver.trackingStateInput = RemapInputAction(driver.trackingStateInput);
         }
 
         Hands = GetComponent<LokaVRHand>();

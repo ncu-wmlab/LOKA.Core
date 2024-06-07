@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Hands;
 
 [RequireComponent(typeof(LokaPlayer))]
@@ -31,35 +32,40 @@ public class LokaVRHand : MonoBehaviour, ILokaVRDevice
     /// <summary>
     /// 是否顯示手指追蹤位置的立方體
     /// </summary>
-    public bool DisplayHandJointCube = true;
+    [SerializeField] bool DisplayHandJointCube = true;
     
+    /* -------------------------------------------------------------------------- */
+    [Header("Input Actions")]
+    [SerializeField] InputActionProperty _leftHandTrackingState;
+    [SerializeField] InputActionProperty _rightHandTrackingState;
+
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
     /// Is hand data avaliable? (Does hands exist?)
     /// </summary>
-    public bool IsAvailable => _leftHandDevice != null || _rightHandDevice != null;
+    // public bool IsAvailable => _leftHandDevice != null || _rightHandDevice != null;
 
     /// <summary>
     /// Is left hand data valid?
     /// </summary>
-    public bool IsLeftHandTracked => _leftHandDevice != null && _leftHandDevice.trackingState.value != 0;
+    public bool IsLeftHandTracked => _leftHandTrackingState.action.ReadValue<int>() != 0;
 
     /// <summary>
     /// Is right hand data valid?
     /// </summary>
-    public bool IsRightHandTracked => _rightHandDevice != null && _rightHandDevice.trackingState.value != 0;    
+    public bool IsRightHandTracked => _rightHandTrackingState.action.ReadValue<int>() != 0;
 
-    public XRHandDevice LeftHandDevice => _leftHandDevice;
-    public XRHandDevice RightHandDevice => _rightHandDevice;
+    // public XRHandDevice LeftHandDevice => _leftHandDevice;
+    // public XRHandDevice RightHandDevice => _rightHandDevice;
     public Dictionary<XRHandJointID, Transform> LeftHandJointTrackPos => _leftHandJointTrackPos;
     public Dictionary<XRHandJointID, Transform> RightHandJointTrackPos => _rightHandJointTrackPos;
 
     /* -------------------------------------------------------------------------- */
 
     LokaPlayer _lokaPlayer;
-    XRHandDevice _leftHandDevice;
-    XRHandDevice _rightHandDevice;
+    // XRHandDevice _leftHandDevice;
+    // XRHandDevice _rightHandDevice;
     Dictionary<XRHandJointID, Transform> _leftHandJointTrackPos = new Dictionary<XRHandJointID, Transform>();
     Dictionary<XRHandJointID, Transform> _rightHandJointTrackPos = new Dictionary<XRHandJointID, Transform>(26);
 
@@ -92,36 +98,36 @@ public class LokaVRHand : MonoBehaviour, ILokaVRDevice
     void Update()
     {        
         // if no hand device registered, try to find it
-        if(_leftHandDevice == null)
-        {
-            var foundHandL = _lokaPlayer.InputReceiver.devices.FirstOrDefault(
-                x => x is XRHandDevice && x.usages.Any(u => u.ToString().ToLower().Contains("left")));  // FIXME magic string?
-            if (foundHandL != null)
-            {
-                _leftHandDevice = (XRHandDevice)foundHandL;
-            }
-        }
-        if(_rightHandDevice == null)
-        {
-            var foundHandR = _lokaPlayer.InputReceiver.devices.FirstOrDefault(
-                x => x is XRHandDevice && x.usages.Any(u => u.ToString().ToLower().Contains("right")));  // FIXME magic string?
-            if (foundHandR != null)
-            {
-                _rightHandDevice = (XRHandDevice)foundHandR;
-            }
-        }
+        // if(_leftHandDevice == null)
+        // {
+        //     var foundHandL = _lokaPlayer.InputReceiver.devices.FirstOrDefault(
+        //         x => x is XRHandDevice && x.usages.Any(u => u.ToString().ToLower().Contains("left")));  
+        //     if (foundHandL != null)
+        //     {
+        //         _leftHandDevice = (XRHandDevice)foundHandL;
+        //     }
+        // }
+        // if(_rightHandDevice == null)
+        // {
+        //     var foundHandR = _lokaPlayer.InputReceiver.devices.FirstOrDefault(
+        //         x => x is XRHandDevice && x.usages.Any(u => u.ToString().ToLower().Contains("right")));  
+        //     if (foundHandR != null)
+        //     {
+        //         _rightHandDevice = (XRHandDevice)foundHandR;
+        //     }
+        // }
 
         // set hand pos
-        if (_leftHandDevice != null)
-        {
-            LeftHandTransform.localPosition = _leftHandDevice.devicePosition.ReadValue();
-            LeftHandTransform.rotation = _leftHandDevice.deviceRotation.ReadValue();
-        }
-        if (_rightHandDevice != null)
-        {
-            RightHandTransform.localPosition = _rightHandDevice.devicePosition.ReadValue();
-            RightHandTransform.rotation = _rightHandDevice.deviceRotation.ReadValue();
-        }
+        // if (_leftHandDevice != null)
+        // {
+        //     LeftHandTransform.localPosition = _leftHandDevice.devicePosition.ReadValue();
+        //     LeftHandTransform.rotation = _leftHandDevice.deviceRotation.ReadValue();
+        // }
+        // if (_rightHandDevice != null)
+        // {
+        //     RightHandTransform.localPosition = _rightHandDevice.devicePosition.ReadValue();
+        //     RightHandTransform.rotation = _rightHandDevice.deviceRotation.ReadValue();
+        // }
 
         // set joint pos (from LabDeviceChannel)
         var lHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_LEFT_JOINTS_POSE);
