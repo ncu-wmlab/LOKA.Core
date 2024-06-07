@@ -3130,6 +3130,74 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "LOKA Eyetrack",
+            "id": "45aa8c3d-d7e5-445c-9075-fce9a2c7bb24",
+            "actions": [
+                {
+                    "name": "Combined Eye Gaze Vector",
+                    "type": "Value",
+                    "id": "87a0386e-f781-4e14-bb15-7ef1d7e2f3ca",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Left Eye Openness",
+                    "type": "Value",
+                    "id": "d0ab64f1-0250-4e1d-97bf-191ee0f5feec",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Right Eye Openness",
+                    "type": "Value",
+                    "id": "1c354d97-3e0b-4793-beae-8a31fdd82d56",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0cba51e6-aeba-40e9-877a-57f4c240b1f1",
+                    "path": "<PXR_HMD>/combinedEyeGazeVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Combined Eye Gaze Vector",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5afbcc75-5b16-469d-a188-0645efcb5620",
+                    "path": "<PXR_HMD>/leftEyeOpenness",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Openness",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f2d04809-4b61-4b3f-9a99-0a34b2fc345a",
+                    "path": "<PXR_HMD>/rightEyeOpenness",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Openness",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

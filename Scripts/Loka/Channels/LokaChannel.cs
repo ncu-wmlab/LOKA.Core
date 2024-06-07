@@ -38,7 +38,7 @@ public abstract class LokaChannel : DataChannelBase
         Message msg = JsonConvert.DeserializeObject<Message>(msgStr);
         // if(msg == null || msg.T == null) 
         //     return;
-        Debug.Log($"[{GetType()}] <color=#1abc9c>RECV</color>  {msg.T}: {msg.M} (Len={bytes.Length})");  // FIXME Logging should be removed in production
+        Debug.Log($"[{GetType()}] <color=#1abc9c>RECV</color>  {msg.T}: {msg.M} ({bytes.Length} Bytes)");  // FIXME Logging should be removed in production
         OnMessageReceive(msg.T, msg.M);
     }
 

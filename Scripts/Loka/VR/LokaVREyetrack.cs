@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(LokaPlayer))]
@@ -15,35 +16,33 @@ public class LokaVREyetrack : MonoBehaviour, ILokaVRDevice
     /// <summary>
     /// Where eyes look at
     /// </summary>
-    public Transform EyeGazeTarget;
+    public Transform EyeGazeTrackPos;
+
+    /* -------------------------------------------------------------------------- */
+
+    [SerializeField] InputActionProperty _combinedEyeGazeVectorAction;
+    [SerializeField] InputActionProperty _leftEyeOpennessAction;
+    [SerializeField] InputActionProperty _rightEyeOpennessAction;
+
+    /* -------------------------------------------------------------------------- */
 
     XRHMD _HMD;
-    LokaPlayer _player;
+    LokaPlayerVR _player;
 
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
-    /// Is data valid/available?
+    /// Is eye data valid?
     /// </summary>
-    public bool IsAvailable { get; private set;}
-    /// <summary>
-    /// Is left eye data valid?
-    /// </summary>
-    public bool IsLeftEyeTracked { get; private set;}
-    /// <summary>
-    /// Is right eye data valid?
-    /// </summary>
-    public bool IsRightEyeTracked { get; private set;}
+    public bool IsEyeTracked => _combinedEyeGazeVectorAction.action.ReadValue<Vector3>() != Vector3.zero;
     /// <summary>
     /// Left eye openness value
     /// </summary>
-    public float LeftEyeOpenness { get; private set;}
+    public float LeftEyeOpenness => _leftEyeOpennessAction.action.ReadValue<float>();
     /// <summary>
     /// Right eye openness value
     /// </summary>
-    public float RightEyeOpenness { get; private set;}
-
-    public XRHMD HmdDevice => _HMD;
+    public float RightEyeOpenness => _rightEyeOpennessAction.action.ReadValue<float>();
 
     /* -------------------------------------------------------------------------- */
 
@@ -53,42 +52,50 @@ public class LokaVREyetrack : MonoBehaviour, ILokaVRDevice
     /// </summary>
     void Awake()
     {
-        _player = GetComponent<LokaPlayer>();        
+        _player = GetComponent<LokaPlayerVR>();        
     }
 
-    public void RemapInputs()
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
     {
-        
+        // remap input actions
+        _combinedEyeGazeVectorAction = _player.RemapInputAction(_combinedEyeGazeVectorAction);
+        _leftEyeOpennessAction = _player.RemapInputAction(_leftEyeOpennessAction);
+        _rightEyeOpennessAction = _player.RemapInputAction(_rightEyeOpennessAction);
     }
 
     void LateUpdate()
     {        
+        EyeGazeTrackPos.position = _combinedEyeGazeVectorAction.action.ReadValue<Vector3>() + _eyeOrigin.position;
+
         // if HMD not registered, try to find it
-        if(_HMD == null)
-        {
-            var device = _player.InputReceiver.devices.FirstOrDefault(x => x is XRHMD);
-            if(device == null)
-                return;
-            _HMD = (XRHMD)device;
-        }
+        // if(_HMD == null)
+        // {
+        //     var device = _player.InputReceiver.devices.FirstOrDefault(x => x is XRHMD);
+        //     if(device == null)
+        //         return;
+        //     _HMD = (XRHMD)device;
+        // }
 
         // Retrieve data of device type
-        if (_HMD is PXR_HMD picoHmd)
-        {
-            // PXR
-            IsAvailable = true;
-            IsLeftEyeTracked = picoHmd.combinedEyeGazeVector.value != Vector3.zero;
-            IsRightEyeTracked = picoHmd.combinedEyeGazeVector.value != Vector3.zero;
-            LeftEyeOpenness = picoHmd.leftEyeOpenness.value;
-            RightEyeOpenness = picoHmd.rightEyeOpenness.value;
-            EyeGazeTarget.position = _eyeOrigin.position + picoHmd.combinedEyeGazeVector.value;
-        }
-        // TODO orther VR devices eyetrack      
-        else
-        {
-            IsAvailable = false;  
-            IsLeftEyeTracked = false;
-            IsRightEyeTracked = false; 
-        }
+        // if (_HMD is PXR_HMD picoHmd)
+        // {
+        //     // PXR
+        //     IsAvailable = true;
+        //     IsLeftEyeTracked = picoHmd.combinedEyeGazeVector.value != Vector3.zero;
+        //     IsRightEyeTracked = picoHmd.combinedEyeGazeVector.value != Vector3.zero;
+        //     LeftEyeOpenness = picoHmd.leftEyeOpenness.value;
+        //     RightEyeOpenness = picoHmd.rightEyeOpenness.value;
+        //     EyeGazeTarget.position = _eyeOrigin.position + picoHmd.combinedEyeGazeVector.value;
+        // }
+        // else
+        // {
+        //     IsAvailable = false;  
+        //     IsLeftEyeTracked = false;
+        //     IsRightEyeTracked = false; 
+        // }
     }    
 }

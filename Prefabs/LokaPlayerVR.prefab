@@ -105,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6655692967099740825}
   m_Layer: 0
-  m_Name: EyeGazeTarget
+  m_Name: EyeGazeTrackPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,7 +119,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697509356448921017}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.85}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5324851959961999898}
@@ -869,7 +869,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eyeOrigin: {fileID: 7533806627833164512}
-  EyeGazeTarget: {fileID: 6655692967099740825}
+  EyeGazeTrackPos: {fileID: 6655692967099740825}
+  _combinedEyeGazeVectorAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Combined Eye Gaze Vector
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: ee102c3d-69e9-4320-8892-4fd684d3508e
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 4970795788838022573, guid: ad00d28a7b3dd604990434c8c2479ca8, type: 3}
+  _leftEyeOpennessAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Left Eye Openness
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: b8aba6c8-3ffa-4b1d-8ddd-7eced0397ef6
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 5651883311607717529, guid: ad00d28a7b3dd604990434c8c2479ca8, type: 3}
+  _rightEyeOpennessAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Right Eye Openness
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 9dcb6aec-90f5-40d6-8589-c66ca57abbe6
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 1567852255394203200, guid: ad00d28a7b3dd604990434c8c2479ca8, type: 3}
 --- !u!114 &8032617723110800211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -889,7 +925,7 @@ MonoBehaviour:
   RightHandJointRotationOffset: {x: 0, y: -90, z: 0}
   DisplayHandJointCube: 1
   _leftHandTrackingState:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Left Hand Tracking State
       m_Type: 0
@@ -899,9 +935,9 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: 8591691980172976305, guid: ad00d28a7b3dd604990434c8c2479ca8, type: 3}
   _rightHandTrackingState:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Right Hand Tracking State
       m_Type: 0
@@ -911,7 +947,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: -1337010617941345452, guid: ad00d28a7b3dd604990434c8c2479ca8, type: 3}
 --- !u!114 &9133955335701352135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1252,6 +1288,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: bb4c0373-3e95-4a9b-a002-5d08be5b135f
     m_ActionName: LOKA RightHand/Hand Rotation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 87a0386e-f781-4e14-bb15-7ef1d7e2f3ca
+    m_ActionName: LOKA Eyetrack/Combined Eye Gaze Vector
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d0ab64f1-0250-4e1d-97bf-191ee0f5feec
+    m_ActionName: LOKA Eyetrack/Left Eye Openness
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1c354d97-3e0b-4793-beae-8a31fdd82d56
+    m_ActionName: LOKA Eyetrack/Right Eye Openness
   m_DefaultActionMap: XRI Head
 --- !u!114 &771290319426767146
 MonoBehaviour:
