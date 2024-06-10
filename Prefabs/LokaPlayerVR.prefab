@@ -876,7 +876,7 @@ MonoBehaviour:
       m_Name: Combined Eye Gaze Vector
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: ee102c3d-69e9-4320-8892-4fd684d3508e
+      m_Id: 9f6cdb09-b710-47a6-b6e4-93e95c8a93b0
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -888,7 +888,7 @@ MonoBehaviour:
       m_Name: Left Eye Openness
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: b8aba6c8-3ffa-4b1d-8ddd-7eced0397ef6
+      m_Id: e0c7acc6-18cc-42f2-8ece-357ed7a449c5
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -900,7 +900,7 @@ MonoBehaviour:
       m_Name: Right Eye Openness
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 9dcb6aec-90f5-40d6-8589-c66ca57abbe6
+      m_Id: af24c226-1c50-47d4-9516-d0f58fc1b5a1
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -920,7 +920,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftHandTransform: {fileID: 1501792245075245669}
   RightHandTransform: {fileID: 2765206152520105156}
-  HandSizeOffset: 1
+  HandSizeOffset: 0.595
   LeftHandJointRotationOffset: {x: 0, y: 90, z: 0}
   RightHandJointRotationOffset: {x: 0, y: -90, z: 0}
   DisplayHandJointCube: 1
@@ -947,7 +947,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -1337010617941345452, guid: ad00d28a7b3dd604990434c8c2479ca8, type: 3}
+    m_Reference: {fileID: -3075949004769365614, guid: ad00d28a7b3dd604990434c8c2479ca8, type: 3}
 --- !u!114 &9133955335701352135
 MonoBehaviour:
   m_ObjectHideFlags: 0

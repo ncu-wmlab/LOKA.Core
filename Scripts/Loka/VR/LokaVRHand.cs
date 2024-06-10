@@ -63,7 +63,7 @@ public class LokaVRHand : MonoBehaviour, ILokaVRDevice
 
     /* -------------------------------------------------------------------------- */
 
-    LokaPlayer _lokaPlayer;
+    LokaPlayerVR _Player;
     // XRHandDevice _leftHandDevice;
     // XRHandDevice _rightHandDevice;
     Dictionary<XRHandJointID, Transform> _leftHandJointTrackPos = new Dictionary<XRHandJointID, Transform>();
@@ -73,7 +73,7 @@ public class LokaVRHand : MonoBehaviour, ILokaVRDevice
 
     void Awake()
     {
-        _lokaPlayer = GetComponent<LokaPlayer>();
+        _Player = GetComponent<LokaPlayerVR>();
 
         // Create hand joint track objects
         for (int handness = 0; handness < 2; handness++)
@@ -89,6 +89,16 @@ public class LokaVRHand : MonoBehaviour, ILokaVRDevice
                 (handness == 0 ? _leftHandJointTrackPos : _rightHandJointTrackPos).Add(XRHandJointIDUtility.FromIndex(i), go.transform);
             }
         }
+    }
+
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
+        _leftHandTrackingState = _Player.RemapInputAction(_leftHandTrackingState);
+        _rightHandTrackingState = _Player.RemapInputAction(_rightHandTrackingState);
     }
 
     /// <summary>
@@ -130,8 +140,8 @@ public class LokaVRHand : MonoBehaviour, ILokaVRDevice
         // }
 
         // set joint pos (from LabDeviceChannel)
-        var lHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_LEFT_JOINTS_POSE);
-        var rHandJoints = _lokaPlayer.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_RIGHT_JOINTS_POSE);
+        var lHandJoints = _Player.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_LEFT_JOINTS_POSE);
+        var rHandJoints = _Player.LabDeviceChannel.GetData<List<Pose?>>(LabDeviceChannel.LabDeviceControl.HAND_RIGHT_JOINTS_POSE);
         for (int handness = 0; handness < 2; handness++)
         {
             var handJoints = handness == 0 ? lHandJoints : rHandJoints;
