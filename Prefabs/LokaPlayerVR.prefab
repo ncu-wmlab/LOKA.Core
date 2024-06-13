@@ -1313,7 +1313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bcc82901c3f48a88d3408251afa3365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TextureSize: {x: 1024, y: 1024}
+  m_TextureSize: {x: 2048, y: 1024}
   m_Source: 0
   m_Camera: {fileID: 7533806627833164517}
   m_Texture: {fileID: 8400000, guid: 4a2b2015a1a472141b29f49d01bcfd2f, type: 2}
@@ -1567,6 +1567,10 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 7533806627833164517}
+    - target: {fileID: 6073282543337632998, guid: eff48629924ff024198072ab58e647c7, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 5028511543256657100}
     - target: {fileID: 7643426503833679691, guid: eff48629924ff024198072ab58e647c7, type: 3}
       propertyPath: local
       value: 0

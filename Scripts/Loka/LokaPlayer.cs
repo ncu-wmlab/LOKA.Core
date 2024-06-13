@@ -31,13 +31,21 @@ public class LokaPlayer : MonoBehaviour
     /// </summary>
     public InputReceiver InputReceiver { get; private set; }
     /// <summary>
-    /// 
+    /// TODO
     /// </summary>
     public VideoStreamReceiver VideoReceiver { get; private set; }
     /// <summary>
     /// 
     /// </summary>
     public AudioStreamReceiver AudioReceiver { get; private set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public VideoStreamReceiver VideoStreamSender { get; private set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public AudioStreamReceiver AudioStreamSender { get; private set; }
 
     /* -------------------------------------------------------------------------- */
 
@@ -61,8 +69,10 @@ public class LokaPlayer : MonoBehaviour
         InputReceiver = GetComponentInChildren<InputReceiver>();
         VideoReceiver = GetComponentInChildren<VideoStreamReceiver>();
         AudioReceiver = GetComponentInChildren<AudioStreamReceiver>();
+        VideoStreamSender = GetComponentInChildren<VideoStreamReceiver>();
+        AudioStreamSender = GetComponentInChildren<AudioStreamReceiver>();
 
-        // Register A/V Events
+        // Register A/V Receiver Events
         if(VideoReceiver)
         {
             VideoReceiver.OnUpdateReceiveTexture += (s) => {
