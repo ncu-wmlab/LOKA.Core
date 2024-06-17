@@ -1183,8 +1183,8 @@
                 },
                 {
                     "name": "first",
-                    "id": "b9ecb60d-341e-47cf-b50a-41d5815af8b0",
-                    "path": "<XRHandDevice>{RightHand}/deviceRotation",
+                    "id": "3722d501-eb80-4f61-9361-08a5ea7a1394",
+                    "path": "<XRController>{RightHand}/pointerRotation",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
@@ -1194,8 +1194,8 @@
                 },
                 {
                     "name": "second",
-                    "id": "3722d501-eb80-4f61-9361-08a5ea7a1394",
-                    "path": "<XRController>{RightHand}/pointerRotation",
+                    "id": "b9ecb60d-341e-47cf-b50a-41d5815af8b0",
+                    "path": "<XRHandDevice>{RightHand}/deviceRotation",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
@@ -1227,8 +1227,8 @@
                 },
                 {
                     "name": "first",
-                    "id": "3ef0a781-60c5-48bc-a584-f95553f8ae0a",
-                    "path": "<XRHandDevice>{RightHand}/devicePosition",
+                    "id": "9717e367-64a4-440a-9974-1e641d753eb2",
+                    "path": "<XRController>{RightHand}/pointerPosition",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
@@ -1238,8 +1238,8 @@
                 },
                 {
                     "name": "second",
-                    "id": "9717e367-64a4-440a-9974-1e641d753eb2",
-                    "path": "<XRController>{RightHand}/pointerPosition",
+                    "id": "3ef0a781-60c5-48bc-a584-f95553f8ae0a",
+                    "path": "<XRHandDevice>{RightHand}/devicePosition",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
