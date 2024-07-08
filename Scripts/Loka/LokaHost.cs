@@ -104,13 +104,13 @@ public class LokaHost : SignalingHandlerBase,
         else 
             throw new NotSupportedException("[LokaHost] Unsupported track kind: " + track.Kind);
         
+        Debug.Log($"[LokaHost] Add Track Kind={track.Kind} Id={eventData.connectionId} ");
         SetReceiver(eventData.connectionId, receiver, eventData.transceiver);       
         if(track.Kind == Unity.WebRTC.TrackKind.Audio)
         {
             ((AudioStreamReceiver)receiver).targetAudioSource.loop = true;
             ((AudioStreamReceiver)receiver).targetAudioSource.Play();
         } 
-        Debug.Log($"[LokaHost] Add Track Kind={track.Kind} Id={eventData.connectionId} ");
     }
 
     public void OnAddChannel(SignalingEventData eventData)

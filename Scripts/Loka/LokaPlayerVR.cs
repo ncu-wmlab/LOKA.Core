@@ -60,6 +60,10 @@ public class LokaPlayerVR : LokaPlayer
     {
         base.LateInit();
 
+        _xrOrigin_snapTurnProvider = _xrOrigin_snapTurnProvider ?? GetComponentInChildren<ActionBasedSnapTurnProvider>();
+        _xrOrigin_continuousTurnProvider = _xrOrigin_continuousTurnProvider ?? GetComponentInChildren<ActionBasedContinuousTurnProvider>();
+        _xrOrigin_moveProvider = _xrOrigin_moveProvider ?? GetComponentInChildren<ActionBasedContinuousMoveProvider>();
+
         if (_xrOrigin_snapTurnProvider != null)
         {
             _xrOrigin_snapTurnProvider.leftHandSnapTurnAction = RemapInputAction(_xrOrigin_snapTurnProvider.leftHandSnapTurnAction);

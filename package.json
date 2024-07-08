@@ -17,6 +17,7 @@
       "com.unity.renderstreaming": "3.1.0-exp.7",
       "com.unity.nuget.newtonsoft-json": "3.0.2",
       "com.unity.xr.interaction.toolkit": "2.3.2",
+      "com.unity.xr.hands": "1.4.1",
 
       "com.xrlab.labframe": "0.0.16",
       "com.xrlab.labframe_breathstrap": "1.0.0",
