@@ -19,7 +19,7 @@ public class BaseDictPanel : MonoBehaviour
     /// <summary>
     /// _dict[categoryName][metricName] = metric value
     /// </summary>
-    protected Dictionary<string, Dictionary<string, object>> _dict = new Dictionary<string, Dictionary<string, object>>(){{"", new Dictionary<string, object>()}};
+    protected Dictionary<string, Dictionary<string, object>> _dict = new Dictionary<string, Dictionary<string, object>>()/*{{"", new Dictionary<string, object>()}}*/;
     Dictionary<string, Transform> _uiCategory = new Dictionary<string, Transform>();
     Dictionary<string, TMP_Text> _uiMetric = new Dictionary<string, TMP_Text>();
 
@@ -34,6 +34,7 @@ public class BaseDictPanel : MonoBehaviour
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// Display metrics in UI 
     /// </summary>
     protected virtual void Update()
     {       
@@ -103,6 +104,7 @@ public class BaseDictPanel : MonoBehaviour
     /// </summary>
     public void Clear()
     {
+        // TODO
         // _dict.Clear();
         // foreach(Transform t in _containerParent)
         // {

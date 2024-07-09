@@ -2,9 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using Unity.RenderStreaming;
 
 public class LokaInputActionsPanel : BaseDictPanel, ILokaHostUISubpanel
-{
+{    
     InputActionAsset _focusingInputActions;
 
     public void OnShow(LokaPlayer player)
@@ -24,6 +25,7 @@ public class LokaInputActionsPanel : BaseDictPanel, ILokaHostUISubpanel
     /// </summary>
     protected override void Update()
     {
+        // Input Actions
         if(!_focusingInputActions)
             return;
 

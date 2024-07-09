@@ -41,11 +41,11 @@ public class LokaPlayer : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public VideoStreamReceiver VideoStreamSender { get; private set; }
+    public VideoStreamSender VideoSender { get; private set; }
     /// <summary>
     /// 
     /// </summary>
-    public AudioStreamReceiver AudioStreamSender { get; private set; }
+    public AudioStreamSender AudioSender { get; private set; }
 
     /* -------------------------------------------------------------------------- */
 
@@ -69,8 +69,8 @@ public class LokaPlayer : MonoBehaviour
         InputReceiver = GetComponentInChildren<InputReceiver>();
         VideoReceiver = GetComponentInChildren<VideoStreamReceiver>();
         AudioReceiver = GetComponentInChildren<AudioStreamReceiver>();
-        VideoStreamSender = GetComponentInChildren<VideoStreamReceiver>();
-        AudioStreamSender = GetComponentInChildren<AudioStreamReceiver>();
+        VideoSender = GetComponentInChildren<VideoStreamSender>();
+        AudioSender = GetComponentInChildren<AudioStreamSender>();
 
         // Register A/V Receiver Events
         if(VideoReceiver)

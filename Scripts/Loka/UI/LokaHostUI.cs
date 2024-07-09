@@ -20,9 +20,8 @@ public class LokaHostUI : MonoBehaviour
     [Header("Main Info Panel")]
     [SerializeField] GameObject _mainPanel;
 
-    [Header("SubPanels")]
-    [SerializeField] LabDevicePanel _labDevicePanel;
-    [SerializeField] LokaInputActionsPanel _inputActionsPanel;
+    [Header("Subpanel")]
+    [SerializeField] LokaHostUISubpanelController _subpanelController;
 
     /* -------------------------------------------------------------------------- */
     LokaHost _host;
@@ -89,14 +88,12 @@ public class LokaHostUI : MonoBehaviour
         {
             // hide
             _mainPanel.gameObject.SetActive(false);
-            _labDevicePanel.OnHide();
-            _inputActionsPanel.OnHide();
+            _subpanelController.UnfocusPlayer();
         }
         else
         {
             _mainPanel.gameObject.SetActive(true);
-            _labDevicePanel.OnShow(player);
-            _inputActionsPanel.OnShow(player);
+            _subpanelController.FocusPlayer(player);
         }
     }
 
