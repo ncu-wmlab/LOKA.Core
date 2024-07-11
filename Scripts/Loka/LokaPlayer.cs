@@ -31,7 +31,7 @@ public class LokaPlayer : MonoBehaviour
     /// </summary>
     public InputReceiver InputReceiver { get; private set; }
     /// <summary>
-    /// TODO
+    /// 
     /// </summary>
     public VideoStreamReceiver VideoReceiver { get; private set; }
     /// <summary>
@@ -57,6 +57,7 @@ public class LokaPlayer : MonoBehaviour
     {
         ConnectionId = connectionId;
         name = "LokaPlayer ID=" + connectionId;
+        DontDestroyOnLoad(gameObject);
         SceneControlChannel = GetComponentInChildren<SceneControlChannel>();
         LabDeviceChannel = GetComponentInChildren<LabDeviceChannel>();
     }

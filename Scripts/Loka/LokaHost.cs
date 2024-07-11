@@ -16,6 +16,11 @@ public class LokaHost : SignalingHandlerBase,
     IAddReceiverHandler, IAddChannelHandler, 
     IDisconnectHandler, IDeletedConnectionHandler 
 {
+    protected static LokaHost _instance = null;
+    public static LokaHost Instance => _instance;
+    
+    /* -------------------------------------------------------------------------- */
+
     [Header("Prefabs")]
     [SerializeField] LokaPlayer _playerPrefab;
 
@@ -29,6 +34,15 @@ public class LokaHost : SignalingHandlerBase,
     /// </summary>
     Dictionary<string, LokaPlayer> _connectedPlayers = new Dictionary<string, LokaPlayer>();
 
+    
+    /// <summary>
+    /// 連線 ID 列表
+    /// </summary>
+    public List<string> ConnectionIds => _connectionIds;
+
+    /// <summary>
+    /// 連線 ID 對應的 GameObject (LokaPlayer)
+    /// </summary>
     public Dictionary<string, LokaPlayer> ConnectedPlayers => _connectedPlayers;
 
     /* -------------------------------------------------------------------------- */
@@ -49,6 +63,13 @@ public class LokaHost : SignalingHandlerBase,
     /// </summary>
     void Awake()
     {
+        if(_instance) 
+        {
+            Debug.LogWarningFormat("Only one instance of LokaHost is allowed! Remove dulicated instance: {0}", gameObject.name);
+            Destroy(gameObject);
+            return;    
+        }
+        DontDestroyOnLoad(gameObject);        
         GetComponent<SignalingManager>().Run(null, new SignalingHandlerBase[]{this});
     }
 

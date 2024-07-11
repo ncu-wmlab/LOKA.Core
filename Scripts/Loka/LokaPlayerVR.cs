@@ -16,14 +16,15 @@ public class LokaPlayerVR : LokaPlayer
 {   
     // RenderStreaming 會複製一個 InputAction mapping, 但是原本關連到的 InputAction 不會更新。因此需要重新指定。
     [Header("XRInputAction Remapping")]
-    [SerializeField] ActionBasedSnapTurnProvider _xrOrigin_snapTurnProvider;
-    [SerializeField] ActionBasedContinuousTurnProvider _xrOrigin_continuousTurnProvider;
-    [SerializeField] ActionBasedContinuousMoveProvider _xrOrigin_moveProvider;
     [SerializeField] ActionBasedControllerManager _leftHandControllerManager;
     [SerializeField] ActionBasedController _leftHandXrController;
-    [SerializeField] GrabMoveProvider _leftHandGrabMoveProvider;
     [SerializeField] ActionBasedControllerManager _rightHandControllerManager;
     [SerializeField] ActionBasedController _rightHandXrController;
+    [Header("XRInputAction Remapping (Optional)")]
+    [SerializeField] ActionBasedSnapTurnProvider _xrOrigin_snapTurnProvider;
+    [SerializeField] ActionBasedContinuousTurnProvider _xrOrigin_continuousTurnProvider;
+    [SerializeField] ActionBasedContinuousMoveProvider _xrOrigin_moveProvider;    
+    [SerializeField] GrabMoveProvider _leftHandGrabMoveProvider;    
     [SerializeField] GrabMoveProvider _rightHandGrabMoveProvider;
     [SerializeField] List<TrackedPoseDriver> _trackedPoseDrivers;
     
@@ -172,10 +173,10 @@ public class LokaPlayerVR : LokaPlayer
         var newAction = InputReceiver.actions.FindAction(old.id);
         if (newAction == null)
         {
-            Debug.LogError($"[LokaPlayerVR] Cannot map InputAsset {old.name} ({old.id}) to new. Will use the origin one, which could have no effect or everyone share the same input!!");
+            Debug.LogError($"[LokaPlayerVR] Cannot map InputAsset {old.name} ({old.id}) to new. Will use the origin one, which could have no effect!!");
             return old;
         }
-        Debug.Log($"[LokaPlayerVR] Map InputAsset {old.name} ({old.id}) to {newAction.name} ({newAction.id}). ");
+        // Debug.Log($"[LokaPlayerVR] Map InputAsset {old.name} ({old.id}) to {newAction.name} ({newAction.id}). ");
         return newAction;
     }
 }
