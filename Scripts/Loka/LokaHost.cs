@@ -18,7 +18,7 @@ public class LokaHost : SignalingHandlerBase,
 {
     protected static LokaHost _instance = null;
     public static LokaHost Instance => _instance;
-    
+
     /* -------------------------------------------------------------------------- */
 
     [Header("Prefabs")]
@@ -165,12 +165,13 @@ public class LokaHost : SignalingHandlerBase,
            Debug.LogWarning("[LokaSignalHandler] Unable to remove connection that is not exist: " + connectionId);
            return;
         }
-        _connectionIds.Remove(connectionId);
+        _connectionIds.Remove(connectionId);        
 
         // Remove Player from the scene
         Debug.Log("[LokaSignalHandler] Remove Connection: " + connectionId);
 
-        var player = _connectedPlayers[connectionId];        
+        var player = _connectedPlayers[connectionId];      
+        _connectedPlayers.Remove(connectionId);  
         try
         {
             OnPlayerExit?.Invoke(player);
