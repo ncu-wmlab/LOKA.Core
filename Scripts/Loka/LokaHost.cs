@@ -69,6 +69,7 @@ public class LokaHost : SignalingHandlerBase,
             Destroy(gameObject);
             return;    
         }
+        _instance = this;
         DontDestroyOnLoad(gameObject);        
         GetComponent<SignalingManager>().Run(null, new SignalingHandlerBase[]{this});
     }
