@@ -8,27 +8,40 @@ using UnityEngine.InputSystem.XR;
 [RequireComponent(typeof(LokaPlayer))]
 public class LokaVREyetrack : MonoBehaviour, ILokaVRDevice
 {
+    [Header("TrackPos (Optional)")]
     /// <summary>
-    /// Eyes position (in front of face)
+    /// We use this as origin point to track eye gaze
+    /// Could be Center Eye position (in front of face)
     /// </summary>
-    [SerializeField] Transform _eyeOrigin;
+    public Transform Origin;
 
     /// <summary>
-    /// Where eyes look at
+    /// TrackPos: Where eyes look at
     /// </summary>
     public Transform EyeGazeTrackPos;
+    /// <summary>
+    /// 
+    /// </summary>
+    public Transform LeftEyeTrackPos;
+    /// <summary>
+    /// 
+    /// </summary>
+    public Transform RightEyeTrackPos;
 
     /* -------------------------------------------------------------------------- */
 
     [SerializeField] InputActionProperty _combinedEyeGazeVectorAction;
+    [SerializeField] InputActionProperty _leftEyePositionAction;
     [SerializeField] InputActionProperty _leftEyeOpennessAction;
+    [SerializeField] InputActionProperty _leftEyeRotationAction;
+    [SerializeField] InputActionProperty _rightEyePositionAction;    
+    [SerializeField] InputActionProperty _rightEyeRotationAction;    
     [SerializeField] InputActionProperty _rightEyeOpennessAction;
 
     /* -------------------------------------------------------------------------- */
 
-    XRHMD _HMD;
     LokaPlayerVR _player;
-
+    
     /* -------------------------------------------------------------------------- */
 
     /// <summary>
@@ -36,13 +49,33 @@ public class LokaVREyetrack : MonoBehaviour, ILokaVRDevice
     /// </summary>
     public bool IsEyeTracked => _combinedEyeGazeVectorAction.action.ReadValue<Vector3>() != Vector3.zero;
     /// <summary>
+    /// Left eye position
+    /// </summary>
+    public Vector3 LeftEyePosition => _leftEyePositionAction.action.ReadValue<Vector3>();
+    /// <summary>
+    /// Left eye rotation
+    /// </summary>
+    public Quaternion LeftEyeRotation => _leftEyeRotationAction.action.ReadValue<Quaternion>();
+    /// <summary>
     /// Left eye openness value
     /// </summary>
     public float LeftEyeOpenness => _leftEyeOpennessAction.action.ReadValue<float>();
     /// <summary>
+    /// Right eye position
+    /// </summary>
+    public Vector3 RightEyePosition => _rightEyePositionAction.action.ReadValue<Vector3>();
+    /// <summary>
+    /// Right eye rotation
+    /// </summary>
+    public Quaternion RightEyeRotation => _rightEyeRotationAction.action.ReadValue<Quaternion>();
+    /// <summary>
     /// Right eye openness value
     /// </summary>
     public float RightEyeOpenness => _rightEyeOpennessAction.action.ReadValue<float>();
+    /// <summary>
+    /// Combined eye gaze vector
+    /// </summary>
+    public Vector3 CombinedEyeGazeVector => _combinedEyeGazeVectorAction.action.ReadValue<Vector3>();
 
     /* -------------------------------------------------------------------------- */
 
@@ -62,14 +95,35 @@ public class LokaVREyetrack : MonoBehaviour, ILokaVRDevice
     void Start()
     {
         // remap input actions
-        _combinedEyeGazeVectorAction = _player.RemapInputAction(_combinedEyeGazeVectorAction);
+        _leftEyePositionAction = _player.RemapInputAction(_leftEyePositionAction);
+        _leftEyeRotationAction = _player.RemapInputAction(_leftEyeRotationAction);
         _leftEyeOpennessAction = _player.RemapInputAction(_leftEyeOpennessAction);
+        _rightEyePositionAction = _player.RemapInputAction(_rightEyePositionAction);
+        _rightEyeRotationAction = _player.RemapInputAction(_rightEyeRotationAction);
         _rightEyeOpennessAction = _player.RemapInputAction(_rightEyeOpennessAction);
+        _combinedEyeGazeVectorAction = _player.RemapInputAction(_combinedEyeGazeVectorAction);
     }
 
     void LateUpdate()
     {        
-        EyeGazeTrackPos.position = _combinedEyeGazeVectorAction.action.ReadValue<Vector3>() + _eyeOrigin.position;
+        if(Origin)
+        {
+            if(EyeGazeTrackPos)
+            {
+                EyeGazeTrackPos.position = CombinedEyeGazeVector + Origin.position;
+            }
+            if(LeftEyeTrackPos)
+            {
+                LeftEyeTrackPos.position = LeftEyePosition + Origin.position;
+                LeftEyeTrackPos.rotation = LeftEyeRotation;
+            }
+            if(RightEyeTrackPos)
+            {
+                RightEyeTrackPos.position = RightEyePosition + Origin.position;
+                RightEyeTrackPos.rotation = RightEyeRotation;
+            }
+        }
+        
 
         // if HMD not registered, try to find it
         // if(_HMD == null)

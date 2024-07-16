@@ -3433,10 +3433,46 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Left Eye Position",
+                    "type": "Value",
+                    "id": "41fb6fd2-8c59-4b7c-87a9-c8b9527a961f",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Left Eye Rotation",
+                    "type": "Value",
+                    "id": "f7e0ab88-a3b0-453d-a2f1-45512ace78b6",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Left Eye Openness",
                     "type": "Value",
                     "id": "d0ab64f1-0250-4e1d-97bf-191ee0f5feec",
                     "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Right Eye Position",
+                    "type": "Value",
+                    "id": "65ddcda6-fdf7-4149-acef-b38fc2b3448c",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Right Eye Rotation",
+                    "type": "Value",
+                    "id": "6c222e39-0b3f-4d13-b9a3-1e2f1b4caa7b",
+                    "expectedControlType": "Quaternion",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -3453,37 +3489,312 @@
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "0cba51e6-aeba-40e9-877a-57f4c240b1f1",
-                    "path": "<PXR_HMD>/combinedEyeGazeVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Generic XR Controller",
-                    "action": "Combined Eye Gaze Vector",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5afbcc75-5b16-469d-a188-0645efcb5620",
-                    "path": "<PXR_HMD>/leftEyeOpenness",
+                    "name": "Vector 3 Fallback",
+                    "id": "47c9d02c-7721-4cb3-afea-faec327b415c",
+                    "path": "Vector3Fallback",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left Eye Openness",
-                    "isComposite": false,
+                    "action": "Combined Eye Gaze Vector",
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "f2d04809-4b61-4b3f-9a99-0a34b2fc345a",
+                    "name": "first",
+                    "id": "6afc62da-d574-4419-a2a2-b331ea5ae5c2",
+                    "path": "<PXR_HMD>/combinedEyeGazeVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combined Eye Gaze Vector",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "bf2e7fa4-797f-409e-b384-7bab49db5d34",
+                    "path": "<XRHMD>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combined Eye Gaze Vector",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "third",
+                    "id": "62b20719-8219-4257-aa43-76b62eb16664",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combined Eye Gaze Vector",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Button Fallback",
+                    "id": "c4b973f2-ac4c-4a9d-969e-d67a291d7525",
+                    "path": "ButtonFallback",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Openness",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "first",
+                    "id": "4ede820a-a7bc-4f4c-b82d-aa67531a3ad6",
                     "path": "<PXR_HMD>/rightEyeOpenness",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Right Eye Openness",
                     "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "dadd8cfd-1b94-41d3-9a13-a802a9e148ff",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Openness",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "third",
+                    "id": "343aabd4-a19e-41ff-b47d-ac92699876fd",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Openness",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Vector 3 Fallback",
+                    "id": "3a2bc674-89b9-4115-b341-edf2ab8de639",
+                    "path": "Vector3Fallback",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Position",
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "first",
+                    "id": "f5723354-f06d-4f6b-bfd6-b302eca65bc4",
+                    "path": "<PXR_HMD>/combinedEyeGazeVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "52a266a5-170f-4df2-af88-bbc81813e27c",
+                    "path": "<XRHMD>/leftEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "third",
+                    "id": "6f85a343-cba2-4fa0-83c8-2ddf0d651adb",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Vector 3 Fallback",
+                    "id": "9bef8e2d-8688-492f-806c-d1e2c16ab692",
+                    "path": "Vector3Fallback",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Position",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "first",
+                    "id": "e86eea0c-dd6b-4351-8fdf-fcbf86a7af4e",
+                    "path": "<PXR_HMD>/combinedEyeGazeVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "b9c5fc96-298e-4143-bb43-e2642c7f2167",
+                    "path": "<XRHMD>/rightEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "third",
+                    "id": "cc0efb9d-0128-4e0f-88ce-d6ed966746dc",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Position",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Quaternion Fallback",
+                    "id": "eaca25b8-4bfe-432b-9e93-ace6ef8b82fd",
+                    "path": "QuaternionFallback",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Rotation",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "first",
+                    "id": "8b154ae8-ee5c-440d-a3ed-fc727365ea4a",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "aa5ba998-fc4b-4f0d-bf9b-356109c75802",
+                    "path": "<XRHMD>/leftEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "third",
+                    "id": "5924f040-5761-497b-9da3-dfe3ee7c0593",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Button Fallback",
+                    "id": "a6580a74-6b67-4ba2-8b64-65db7160418d",
+                    "path": "ButtonFallback",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Openness",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "first",
+                    "id": "04eb9194-4aee-4853-a279-af178c305ed2",
+                    "path": "<PXR_HMD>/leftEyeOpenness",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Openness",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "e8798f2f-bb51-4439-ad4b-5b05a38578bc",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Openness",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "third",
+                    "id": "6a37c336-b045-4de4-8797-de45d953ab05",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Eye Openness",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Quaternion Fallback",
+                    "id": "dce06ebd-c588-4a27-b30e-a5fddc8b17d3",
+                    "path": "QuaternionFallback",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Rotation",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "first",
+                    "id": "d4563456-f59c-4374-a11f-7c4828e437e9",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "second",
+                    "id": "330a54ae-faf8-43b6-8292-f4172a836f82",
+                    "path": "<XRHMD>/rightEyeRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "third",
+                    "id": "f4e56892-2b6b-42b7-8a1e-f596f58ebeee",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Eye Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
