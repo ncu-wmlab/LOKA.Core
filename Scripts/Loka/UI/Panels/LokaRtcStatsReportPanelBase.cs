@@ -14,7 +14,7 @@ public class LokaRtcStatsReportPanelBase : BaseDictPanel
     /// If true, will also save record to file when Stats updated
     /// </summary>
     protected bool _isRecording = false;
-    protected const string HIGHLIGH_METRIC_KEY = "<color=green>Highlight Metrics :)</color>";
+    protected const string HIGHLIGHT_METRIC_KEY = "<color=green>Highlight Metrics :)</color>";
     
 
     /// <summary>
@@ -40,7 +40,7 @@ public class LokaRtcStatsReportPanelBase : BaseDictPanel
             string categoryName = $"{name}.{type}";
 
             // Special stats (We set a _stats[HIGHLIGH_METRIC_KEY] for this purpose)
-            _SetMetric(HIGHLIGH_METRIC_KEY, "", "");
+            _SetMetric(HIGHLIGHT_METRIC_KEY, "", "");
             if(type == RTCStatsType.InboundRtp)
             {
                 var inboundRtpStat = (RTCInboundRTPStreamStats)stat.Value;
@@ -51,28 +51,28 @@ public class LokaRtcStatsReportPanelBase : BaseDictPanel
                 double timeDelta = (timeStamp - lastTimestamp)/1_000_000d; // μs to s   
                 ulong bytesDelta = bytesReceived - lastBytesReceived;
                 var bitrate = bytesDelta * 8 / timeDelta;
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.bitrate (kbps)", bitrate/1_000d);
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.bitrate (kbps)", bitrate/1_000d);
 
                 //
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.received (MB)", inboundRtpStat.bytesReceived/1_000_000d);
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.jitter (ms)", inboundRtpStat.jitter*1000d);
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.received (MB)", inboundRtpStat.bytesReceived/1_000_000d);
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.jitter (ms)", inboundRtpStat.jitter*1000d);
             }
             else if(type == RTCStatsType.OutboundRtp)
             {
                 var outRtpStat = (RTCOutboundRTPStreamStats)stat.Value;
 
                 //
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.targetBitrate (kbps)", outRtpStat.targetBitrate/1_000d);
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.sent (MB)", outRtpStat.bytesSent/1_000_000d);
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.packetSent", outRtpStat.packetsSent);
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.framePerSeconds", outRtpStat.framesPerSecond);
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.targetBitrate (kbps)", outRtpStat.targetBitrate/1_000d);
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.sent (MB)", outRtpStat.bytesSent/1_000_000d);
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.packetSent", outRtpStat.packetsSent);
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.framePerSeconds", outRtpStat.framesPerSecond);
             }
             else if(type == RTCStatsType.RemoteInboundRtp)
             {
                 var remoteInRtpStat = (RTCRemoteInboundRtpStreamStats)stat.Value;
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.packetsLost", remoteInRtpStat.packetsLost);
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.roundTripTime (ms)", remoteInRtpStat.roundTripTime*1000d); // s to ms
-                _SetMetric(HIGHLIGH_METRIC_KEY, $"{name}.jitter (ms)", remoteInRtpStat.jitter*1000d); 
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.packetsLost", remoteInRtpStat.packetsLost);
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.roundTripTime (ms)", remoteInRtpStat.roundTripTime*1000d); // s to ms
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.jitter (ms)", remoteInRtpStat.jitter*1000d); 
             }
             
             // save all stats
