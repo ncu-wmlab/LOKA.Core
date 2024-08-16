@@ -2917,7 +2917,7 @@
                 {
                     "name": "",
                     "id": "84f692fb-40e0-48b8-928b-6c0f346e3145",
-                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "path": "<XRController>{RightHand}/primaryButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
@@ -2983,7 +2983,7 @@
                 {
                     "name": "",
                     "id": "54010167-a4e3-4429-947c-016acfdf1e37",
-                    "path": "<XRController>{LeftHand}/triggerButton",
+                    "path": "<XRController>{LeftHand}/triggerPressed",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
@@ -3354,7 +3354,7 @@
                 {
                     "name": "",
                     "id": "5e846ace-6d48-4e45-b9c2-4d595590dd66",
-                    "path": "<XRController>{RightHand}/touchpadClicked",
+                    "path": "<XRController>{RightHand}/secondaryButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
@@ -3398,7 +3398,7 @@
                 {
                     "name": "",
                     "id": "91d4cfea-ed52-4db2-a107-78fddfdefb93",
-                    "path": "<XRController>{RightHand}/triggerButton",
+                    "path": "<XRController>{RightHand}/triggerPressed",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
