@@ -3505,7 +3505,7 @@
                     "path": "<PXR_HMD>/combinedEyeGazeVector",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Generic XR Controller",
                     "action": "Combined Eye Gaze Vector",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -3513,7 +3513,7 @@
                 {
                     "name": "second",
                     "id": "bf2e7fa4-797f-409e-b384-7bab49db5d34",
-                    "path": "<XRHMD>/centerEyePosition",
+                    "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -3549,7 +3549,7 @@
                     "path": "<PXR_HMD>/rightEyeOpenness",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Generic XR Controller",
                     "action": "Right Eye Openness",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -3725,7 +3725,7 @@
                     "path": "<PXR_HMD>/leftEyeOpenness",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Generic XR Controller",
                     "action": "Left Eye Openness",
                     "isComposite": false,
                     "isPartOfComposite": true
