@@ -4,30 +4,35 @@ using System.Collections.Generic;
 using Unity.RenderStreaming;
 using System;
 using Newtonsoft.Json.Linq;
+using Unity.WebRTC;
 
 public partial class LabDeviceChannel : LokaChannel
 {
     /// <summary>
-    /// _datas[dataName] = value_obj
+    /// Host 與 Client 要試圖同步的資料 <br />
+    /// <c>_datas[dataName] = dataValueObj</c>
     /// </summary>
-    Dictionary<LabDeviceControl, object> _datas = new Dictionary<LabDeviceControl, object>();
+    Dictionary<LabDeviceSignal, object> _datas = new Dictionary<LabDeviceSignal, object>();
 
-/* -------------------------------------------------------------------------- */
+/* ---------------------------- 各模態資料的取得/操作 tag enum --------------------------- */
 
-    // Usually Client -> Host
-    public enum LabDeviceControl
+    // Client -> Host
+    public enum LabDeviceSignal
     {
         GANGLION_ISAVAILABLE = 10,
         GANGLION_ISCONNECTED,
         GANGLION_EEGDATA,
         GANGLION_IMPEDANCEDATA,
+
         EYETRACK_ISAVAILABLE = 20,
         EYETRACK_EYELEFTRIGHTDATA,
         EYETRACK_COMBINEDDATA,
         EYETRACK_EYEFOCUSDATA,
+
         BREATHSTRAP_ISAVAILABLE = 30,
         BREATHSTRAP_ISCONNECTED,
         BREATHSTRAP_BREATHDATA,
+
         HAND_LEFT_JOINTS_POSE = 40,
         HAND_RIGHT_JOINTS_POSE
     }
@@ -37,11 +42,75 @@ public partial class LabDeviceChannel : LokaChannel
     {
         GANGLION_DO_CONNECT = 10010,
         GANGLION_RECEIVE_EEG,
+
         GANGLION_RECEIVE_IMPEDANCE,
         BREATHSTRAP_DO_CONNECT = 10030,
     }
+    
+/* ------------------------------- 各模態資料的取得函數 ------------------------------- */
 
-/* -------------------------------------------------------------------------- */
+    // 10
+    public bool GetGanglionIsAvailable()
+    {
+        return GetData<bool>(LabDeviceSignal.GANGLION_ISAVAILABLE);
+    }
+    public bool GetGanglionIsConnected()
+    {
+        return GetData<bool>(LabDeviceSignal.GANGLION_ISCONNECTED);
+    }
+    public Ganglion_EEGData GetGanglionEEGData()
+    {
+        return GetData<Ganglion_EEGData>(LabDeviceSignal.GANGLION_EEGDATA);
+    }
+    public Ganglion_ImpedanceData GetGanglionImpedanceData()
+    {
+        return GetData<Ganglion_ImpedanceData>(LabDeviceSignal.GANGLION_IMPEDANCEDATA);
+    }
+
+    // 20
+    public bool GetEyeTrackIsAvailable()
+    {
+        return GetData<bool>(LabDeviceSignal.EYETRACK_ISAVAILABLE);
+    }
+    public EyeLeftRightData GetEyeTrackEyeLeftRightData()
+    {
+        return GetData<EyeLeftRightData>(LabDeviceSignal.EYETRACK_EYELEFTRIGHTDATA);
+    }
+    public EyeCombinedData GetEyeTrackEyeCombinedData()
+    {
+        return GetData<EyeCombinedData>(LabDeviceSignal.EYETRACK_COMBINEDDATA);
+    }
+    public EyeFocusData GetEyeTrackEyeFocusData()
+    {
+        return GetData<EyeFocusData>(LabDeviceSignal.EYETRACK_EYEFOCUSDATA);
+    }
+
+    // 30
+    public bool GetBreathStrapIsAvailable()
+    {
+        return GetData<bool>(LabDeviceSignal.BREATHSTRAP_ISAVAILABLE);
+    }
+    public bool GetBreathStrapIsConnected()
+    {
+        return GetData<bool>(LabDeviceSignal.BREATHSTRAP_ISCONNECTED);
+    }
+    public BreathStrapData GetBreathStrapData()
+    {
+        return GetData<BreathStrapData>(LabDeviceSignal.BREATHSTRAP_BREATHDATA);
+    }
+
+    // 40
+    public List<Pose?> GetHandLeftJointsPose()
+    {
+        return GetData<List<Pose?>>(LabDeviceSignal.HAND_LEFT_JOINTS_POSE);
+    }
+    public List<Pose?> GetHandRightJointsPose()
+    {
+        return GetData<List<Pose?>>(LabDeviceSignal.HAND_RIGHT_JOINTS_POSE);
+    }
+
+
+/* --------------------------- Unity Monobehaiour --------------------------- */
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -64,7 +133,7 @@ public partial class LabDeviceChannel : LokaChannel
             LocalUpdate();
     }
 
-/* -------------------------------------------------------------------------- */
+/* -------------------------- LokaChannel Override -------------------------- */
 
     protected override void OnMessageReceive(int tag, object msg)
     {
@@ -73,52 +142,17 @@ public partial class LabDeviceChannel : LokaChannel
         else
             HostReceiveMessage(tag, msg);        
         // print($"LabDeviceChannel RECV [{tag}] {msg}");
-    }    
+    }        
 
-    
-
-    /* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
     /// <summary>
-    /// Get Current retrieved data by type.
-    /// If not found, return null!
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public T GetData<T>()
-    {        
-        switch(typeof(T).Name)
-        {
-            case "Ganglion_EEGData":
-                return GetData<T>(LabDeviceControl.GANGLION_EEGDATA);
-            case "Ganglion_ImpedanceData":
-                return GetData<T>(LabDeviceControl.GANGLION_IMPEDANCEDATA);
-            case "EyeLeftRightData":
-                return GetData<T>(LabDeviceControl.EYETRACK_EYELEFTRIGHTDATA);
-            case "EyeCombinedData":
-                return GetData<T>(LabDeviceControl.EYETRACK_COMBINEDDATA);
-            case "EyeFocusData":
-                return GetData<T>(LabDeviceControl.EYETRACK_EYEFOCUSDATA);
-            case "BreathStrapData":
-                return GetData<T>(LabDeviceControl.BREATHSTRAP_BREATHDATA);
-        }
-        
-        // fallback
-        foreach(var key in _datas.Keys)
-        {
-            if(_datas[key] is T)
-                return (T)_datas[key];
-        }
-        return default;
-    }
-
-    /// <summary>
-    /// Get Current retrieved data by type and Data key.
+    /// Get Current stored data by type and Data key.
     /// If not found, return null!
     /// <typeparam name="T">The type</typeparam>
     /// <param name="key">the key</param>
     /// <returns></returns>
-    public T GetData<T>(LabDeviceControl key)
+    public T GetData<T>(LabDeviceSignal key)
     {
         if(!_datas.ContainsKey(key))
         {
@@ -133,5 +167,5 @@ public partial class LabDeviceChannel : LokaChannel
         if(_datas[key] is JArray)
             return ((JArray)_datas[key]).ToObject<T>();
         return (T)_datas[key];
-    }
+    }    
 }

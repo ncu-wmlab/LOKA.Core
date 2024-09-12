@@ -22,12 +22,12 @@ public class LokaPlayer : MonoBehaviour
     /// </summary>
     public SceneControlChannel SceneControlChannel { get; private set; }
     /// <summary>
-    /// 
+    /// 實驗室設備通道
     /// </summary>
     public LabDeviceChannel LabDeviceChannel { get; private set; }
 
     /// <summary>
-    /// 
+    /// 使用者輸入通道
     /// </summary>
     public InputReceiver InputReceiver { get; private set; }
     /// <summary>

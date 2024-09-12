@@ -8,11 +8,11 @@ using UnityEngine.InputSystem.XR;
 [RequireComponent(typeof(LokaPlayer))]
 public class LokaVREyetrack : MonoBehaviour, ILokaVRDevice
 {
-    [Header("TrackPos (Optional)")]
     /// <summary>
     /// We use this as origin point to track eye gaze
     /// Could be Center Eye position (in front of face)
     /// </summary>
+    [Header("TrackPos (Optional)")]
     public Transform Origin;
 
     /// <summary>

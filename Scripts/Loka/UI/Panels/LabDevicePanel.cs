@@ -42,14 +42,13 @@ public class LabDevicePanel : BaseDictPanel, ILokaHostUISubpanel
         // Ganglion
         try
         {
-            _SetMetric($"Ganglion", "IsAvailable", _focusingLabDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.GANGLION_ISAVAILABLE));
-            bool ganglionIsConnected = _focusingLabDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.GANGLION_ISCONNECTED);
+            _SetMetric($"Ganglion", "IsAvailable", _focusingLabDeviceChannel.GetGanglionIsAvailable());
+            bool ganglionIsConnected = _focusingLabDeviceChannel.GetGanglionIsConnected();
             _SetMetric($"Ganglion", "IsConnected", ganglionIsConnected);
             if (ganglionIsConnected)
             {
-                Debug.LogError(_focusingLabDeviceChannel.GetData<Ganglion_EEGData>());
-                _SetMetric($"Ganglion", "EEGData", _focusingLabDeviceChannel.GetData<Ganglion_EEGData>());
-                _SetMetric($"Ganglion", "ImpedanceData", _focusingLabDeviceChannel.GetData<Ganglion_ImpedanceData>());
+                _SetMetric($"Ganglion", "EEGData", _focusingLabDeviceChannel.GetGanglionEEGData());
+                _SetMetric($"Ganglion", "ImpedanceData", _focusingLabDeviceChannel.GetGanglionImpedanceData());
             }
         }
         catch (Exception e)
@@ -60,18 +59,18 @@ public class LabDevicePanel : BaseDictPanel, ILokaHostUISubpanel
         // EyeTrack
         try
         {
-            _SetMetric($"EyeTrack", "IsAvailable", _focusingLabDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.EYETRACK_ISAVAILABLE));
-            var eyeLeftRightData = _focusingLabDeviceChannel.GetData<EyeLeftRightData>();
+            _SetMetric($"EyeTrack", "IsAvailable", _focusingLabDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceSignal.EYETRACK_ISAVAILABLE));
+            var eyeLeftRightData = _focusingLabDeviceChannel.GetEyeTrackEyeLeftRightData();
             _SetMetric($"EyeTrack.EyeLeftRightData", "Timestamp", eyeLeftRightData?.Timestamp);
             _SetMetric($"EyeTrack.EyeLeftRightData", "LeftEyeOpenness", eyeLeftRightData?.LeftEyeOpenness);
             _SetMetric($"EyeTrack.EyeLeftRightData", "RightEyeOpenness", eyeLeftRightData?.RightEyeOpenness);
             _SetMetric($"EyeTrack.EyeLeftRightData", "LeftEyePositionGuide", eyeLeftRightData?.LeftEyePositionGuide);
             _SetMetric($"EyeTrack.EyeLeftRightData", "RightEyePositionGuide", eyeLeftRightData?.RightEyePositionGuide);
-            var eyeCombinedData = _focusingLabDeviceChannel.GetData<EyeCombinedData>();
+            var eyeCombinedData = _focusingLabDeviceChannel.GetEyeTrackEyeCombinedData();
             _SetMetric($"EyeTrack.CombinedData", "Timestamp", eyeCombinedData.Timestamp);
             _SetMetric($"EyeTrack.CombinedData", "CombineEyeGazeVector", eyeCombinedData?.CombineEyeGazeVector);
             _SetMetric($"EyeTrack.CombinedData", "CombineEyeGazePoint", eyeCombinedData?.CombineEyeGazePoint);
-            var eyeFocusData = _focusingLabDeviceChannel.GetData<EyeFocusData>();
+            var eyeFocusData = _focusingLabDeviceChannel.GetEyeTrackEyeFocusData();
             _SetMetric($"EyeTrack.EyeFocusData", "FocusDistance", eyeFocusData?.FocusDistance);
             _SetMetric($"EyeTrack.EyeFocusData", "Timestamp", eyeFocusData?.Timestamp);
             _SetMetric($"EyeTrack.EyeFocusData", "FocusName", eyeFocusData?.FocusName);
@@ -86,9 +85,9 @@ public class LabDevicePanel : BaseDictPanel, ILokaHostUISubpanel
         // Breath
         try
         {
-            _SetMetric($"BreathStrap", "IsAvailable", _focusingLabDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.BREATHSTRAP_ISAVAILABLE));
-            _SetMetric($"BreathStrap", "IsConnected", _focusingLabDeviceChannel.GetData<bool>(LabDeviceChannel.LabDeviceControl.BREATHSTRAP_ISCONNECTED));
-            _SetMetric($"BreathStrap", "BreathValue", _focusingLabDeviceChannel.GetData<BreathStrapData>(LabDeviceChannel.LabDeviceControl.BREATHSTRAP_BREATHDATA)?.breathValue);
+            _SetMetric($"BreathStrap", "IsAvailable", _focusingLabDeviceChannel.GetBreathStrapIsAvailable());
+            _SetMetric($"BreathStrap", "IsConnected", _focusingLabDeviceChannel.GetBreathStrapIsConnected());
+            _SetMetric($"BreathStrap", "BreathValue", _focusingLabDeviceChannel.GetBreathStrapData()?.breathValue);
         }
         catch (Exception e)
         {

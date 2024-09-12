@@ -17,20 +17,21 @@ public partial class LabDeviceChannel : LokaChannel
         if (!IsLocal)
             return;
 
+        /* 註冊接收訊號事件 */
         // Ganglion
         GanglionManager.Instance.OnEEGUpdated += (eegData) =>
         {
-            ClientSendMessage(LabDeviceControl.GANGLION_EEGDATA, eegData);
+            ClientSendMessage(LabDeviceSignal.GANGLION_EEGDATA, eegData);
         };
         GanglionManager.Instance.OnImpedanceUpdated += (impedanceData) =>
         {
-            ClientSendMessage(LabDeviceControl.GANGLION_IMPEDANCEDATA, impedanceData);
+            ClientSendMessage(LabDeviceSignal.GANGLION_IMPEDANCEDATA, impedanceData);
         };
 
         // Breath
         BreathStrapManager.Instance.OnBreathValueUpdated += (breathData) =>
         {
-            ClientSendMessage(LabDeviceControl.BREATHSTRAP_BREATHDATA, breathData);
+            ClientSendMessage(LabDeviceSignal.BREATHSTRAP_BREATHDATA, breathData);
         };
     }
 
@@ -42,34 +43,36 @@ public partial class LabDeviceChannel : LokaChannel
         if (!IsLocal)
             return;
 
+        /* 每一幀都收的訊號 */
         try
         {
             // Ganglion
-            ClientSendMessage(LabDeviceControl.GANGLION_ISAVAILABLE, true); // FIXME Ganglion_IsAvailable
-            ClientSendMessage(LabDeviceControl.GANGLION_ISCONNECTED, GanglionManager.Instance.IsConnected);            
+            ClientSendMessage(LabDeviceSignal.GANGLION_ISAVAILABLE, true); // FIXME Ganglion_IsAvailable
+            ClientSendMessage(LabDeviceSignal.GANGLION_ISCONNECTED, GanglionManager.Instance.IsConnected);            
 
             // EyeTrack
-            ClientSendMessage(LabDeviceControl.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
-            ClientSendMessage(LabDeviceControl.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
-            ClientSendMessage(LabDeviceControl.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
+            ClientSendMessage(LabDeviceSignal.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
+            ClientSendMessage(LabDeviceSignal.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
+            ClientSendMessage(LabDeviceSignal.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
             // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());  // client 一般都對著投影看，沒有意義
 
             // Breath
-            ClientSendMessage(LabDeviceControl.BREATHSTRAP_ISAVAILABLE, true); // TODO Breath_IsAvailable
-            ClientSendMessage(LabDeviceControl.BREATHSTRAP_ISCONNECTED, BreathStrapManager.Instance.IsConnected());
+            ClientSendMessage(LabDeviceSignal.BREATHSTRAP_ISAVAILABLE, true); // TODO Breath_IsAvailable
+            ClientSendMessage(LabDeviceSignal.BREATHSTRAP_ISCONNECTED, BreathStrapManager.Instance.IsConnected());
   
             // Hands
-            ClientSendMessage(LabDeviceControl.HAND_LEFT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Left));
-            ClientSendMessage(LabDeviceControl.HAND_RIGHT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Right));
+            ClientSendMessage(LabDeviceSignal.HAND_LEFT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Left));
+            ClientSendMessage(LabDeviceSignal.HAND_RIGHT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Right));
         }
         catch(Exception e)
         {
             Debug.LogError($"[LabDeviceChannel_Client] {e}");
         }
- 
     }
 
-    private void ClientSendMessage(LabDeviceControl tag, object msg)
+    /* -------------------------------------------------------------------------- */
+
+    private void ClientSendMessage(LabDeviceSignal tag, object msg)
     {
         _datas[tag] = msg;
 
@@ -111,4 +114,6 @@ public partial class LabDeviceChannel : LokaChannel
                 break;
         }
     }
+
+    /* -------------------------------------------------------------------------- */
 }
