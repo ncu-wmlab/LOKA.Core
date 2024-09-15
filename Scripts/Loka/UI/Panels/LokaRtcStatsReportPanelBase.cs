@@ -10,10 +10,6 @@ using LabFrame2023;
 
 public class LokaRtcStatsReportPanelBase : BaseDictPanel
 {
-    /// <summary>
-    /// If true, will also save record to file when Stats updated
-    /// </summary>
-    protected bool _isRecording = false;
     protected const string HIGHLIGHT_METRIC_KEY = "<color=green>Highlight Metrics :)</color>";
     
 
@@ -32,7 +28,7 @@ public class LokaRtcStatsReportPanelBase : BaseDictPanel
             yield break;
         }
 
-
+        // iterate stats
         foreach(var stat in getStatsTask.Value.Stats)
         {
             RTCStatsType type = stat.Value.Type;
@@ -75,32 +71,14 @@ public class LokaRtcStatsReportPanelBase : BaseDictPanel
                 _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.jitter (ms)", remoteInRtpStat.jitter*1000d); 
             }
             
-            // save all stats
+            // Save all stats
             _SetMetric(categoryName, $"timestamp", stat.Value.Timestamp);
             foreach(var pair in stat.Value.Dict)
             {                
                 _SetMetric(categoryName, $"{pair.Key}", pair.Value);
                 // Debug.Log($"[Stats] {name} {pair.Key}: {pair.Value}");
-            }
-
-            // record
-            if(_isRecording)
-            {
-                // print($"[Stats] {name}.{type} {timeStamp} | "+stat.Value.ToJson());
-                RecordStats();
-            }            
+            }         
         }        
     }    
 
-    private void RecordStats()
-    {
-        var data = new LokaStatsData{stats = _dict};
-        LabDataManager.Instance.WriteData(data);
-    }
-
-
-    public class LokaStatsData : LabDataBase
-    {
-        public Dictionary<string, Dictionary<string, object>> stats;
-    }
 }

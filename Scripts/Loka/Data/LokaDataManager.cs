@@ -2,8 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using LabFrame2023;
+using System.Linq;
+using System;
 
 [RequireComponent(typeof(LokaHost))]
+[RequireComponent(typeof(LokaRtcStatsManager))]
 public class LokaDataManager : MonoBehaviour
 {
     protected bool _isInited = false;
@@ -12,7 +15,11 @@ public class LokaDataManager : MonoBehaviour
     public bool CollectEyeTrack = false;
     public bool CollectGanglion = false;
     public bool CollectBreathStrap = false;
-    
+
+    [Header("是否收集玩家連線指標")]
+    public bool CollectConnectionStats = false;
+
+    LokaRtcStatsManager lokaRtcStatsManager;
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -20,7 +27,7 @@ public class LokaDataManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+        lokaRtcStatsManager = GetComponent<LokaRtcStatsManager>();
     }
 
     /// <summary>
@@ -33,25 +40,37 @@ public class LokaDataManager : MonoBehaviour
             var channel = player.LabDeviceChannel;
             if(CollectGanglion && channel.GetGanglionIsConnected())
             {
-                CollectData(player, channel.GetGanglionEEGData());
-                CollectData(player, channel.GetGanglionImpedanceData());
+                SaveData(player, channel.GetGanglionEEGData());
+                SaveData(player, channel.GetGanglionImpedanceData());
             }
             if(CollectEyeTrack && channel.GetEyeTrackIsAvailable())
             {
-                CollectData(player, channel.GetEyeTrackEyeLeftRightData());
-                CollectData(player, channel.GetEyeTrackEyeCombinedData());
-                CollectData(player, channel.GetEyeTrackEyeFocusData());
+                SaveData(player, channel.GetEyeTrackEyeLeftRightData());
+                SaveData(player, channel.GetEyeTrackEyeCombinedData());
+                SaveData(player, channel.GetEyeTrackEyeFocusData());
             }
             if(CollectBreathStrap && channel.GetBreathStrapIsConnected())
             {
-                CollectData(player, channel.GetBreathStrapData());
-            }
+                SaveData(player, channel.GetBreathStrapData());
+            }            
         }        
+
+        if(CollectConnectionStats)
+        {
+            foreach(var p in lokaRtcStatsManager.StatsReports)
+            {
+                SaveData(p.Key, p.Value);
+            }
+        }
     }
 
     /* -------------------------------------------------------------------------- */
+    public void SaveData(LokaPlayer player, LabDataBase data)
+    {
+        SaveData(player.ConnectionId, data);
+    }
 
-    public void CollectData(LokaPlayer player, LabDataBase data)
+    public void SaveData(string appendix, LabDataBase data)
     {
         if(!LabDataManager.Instance.IsInited)
         {
@@ -61,9 +80,16 @@ public class LokaDataManager : MonoBehaviour
 
         if(data == null)
         {
-            Debug.LogWarning("Data is null");
+            // Debug.LogWarning("Data is null");
             return;
         }
-        LabDataManager.Instance.WriteData(data, player.ConnectionId);
+        try
+        {
+            LabDataManager.Instance.WriteData(data, appendix);
+        }
+        catch(Exception e)
+        {
+            Debug.LogError($"[LokaDataManager] SaveData Error: {e.Message}");
+        }
     }
 }
