@@ -28,6 +28,11 @@ public class LokaDataManager : MonoBehaviour
     void Start()
     {
         lokaRtcStatsManager = GetComponent<LokaRtcStatsManager>();
+        lokaRtcStatsManager.OnStatsUpdated += (player, report) =>
+        {
+            if(CollectConnectionStats)
+                SaveData(player, report);
+        } ;
     }
 
     /// <summary>
@@ -54,14 +59,6 @@ public class LokaDataManager : MonoBehaviour
                 SaveData(player, channel.GetBreathStrapData());
             }            
         }        
-
-        if(CollectConnectionStats)
-        {
-            foreach(var p in lokaRtcStatsManager.StatsReports)
-            {
-                SaveData(p.Key, p.Value);
-            }
-        }
     }
 
     /* -------------------------------------------------------------------------- */

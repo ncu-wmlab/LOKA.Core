@@ -14,6 +14,13 @@ public class LokaRtcStatsManager : MonoBehaviour
     /// </summary>
     public Dictionary<LokaPlayer, LokaRtcStatsReport> StatsReports = new Dictionary<LokaPlayer, LokaRtcStatsReport>();
 
+    /// <summary>
+    /// Stats Updated Event
+    /// </summary>
+    public event Action<LokaPlayer, LokaRtcStatsReport> OnStatsUpdated;
+
+    /* -------------------------------------------------------------------------- */
+
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -115,7 +122,10 @@ public class LokaRtcStatsManager : MonoBehaviour
             foreach(var pair in stat.Value.Dict)
             {                
                 report.Metrics[$"{transceiverTag}.{rtcStatType}.{pair.Key}"] = pair.Value;
-            }         
+            }
+
+            // 
+            OnStatsUpdated?.Invoke(player, report);
         }        
     }   
 
