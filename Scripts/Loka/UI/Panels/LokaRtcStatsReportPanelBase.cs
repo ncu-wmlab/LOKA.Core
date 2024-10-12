@@ -57,7 +57,16 @@ public class LokaRtcStatsReportPanelBase : BaseDictPanel
             {
                 var outRtpStat = (RTCOutboundRTPStreamStats)stat.Value;
 
-                //
+                // bitrate
+                ulong bytesSent = outRtpStat.bytesSent;
+                ulong lastBytesSent = (ulong)_GetMetric(categoryName, "bytesSent", 0UL);
+                long lastTimestamp = (long)_GetMetric(categoryName, "timestamp", 0L);
+                double timeDelta = (timeStamp - lastTimestamp)/1_000_000d; // μs to s
+                ulong bytesDelta = bytesSent - lastBytesSent;
+                var bitrate = bytesDelta * 8 / timeDelta;
+                _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.bitrate (kbps)", bitrate/1_000d);
+
+
                 _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.targetBitrate (kbps)", outRtpStat.targetBitrate/1_000d);
                 _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.sent (MB)", outRtpStat.bytesSent/1_000_000d);
                 _SetMetric(HIGHLIGHT_METRIC_KEY, $"{name}.packetSent", outRtpStat.packetsSent);

@@ -71,6 +71,7 @@ public class LokaRtcStatsManager : MonoBehaviour
         }
 
         // iterate stats
+        // FIXME dulp in LokaRtcStatsReportPanelBase.cs
         foreach(var stat in getStatsTask.Value.Stats)
         {
             RTCStatsType rtcStatType = stat.Value.Type;
@@ -103,8 +104,9 @@ public class LokaRtcStatsManager : MonoBehaviour
             }
             else if(rtcStatType == RTCStatsType.OutboundRtp)
             {
-                var outRtpStat = (RTCOutboundRTPStreamStats)stat.Value;
-                report.HighlightedMetrics[$"{transceiverTag}.targetBitrate (kbps)"] = outRtpStat.targetBitrate/1_000d;
+                var outRtpStat = (RTCOutboundRTPStreamStats)stat.Value;                
+
+                report.HighlightedMetrics[$"{transceiverTag}.targetBitrate (Mbps)"] = outRtpStat.targetBitrate/1_000_000d;
                 report.HighlightedMetrics[$"{transceiverTag}.sent (MB)"] = outRtpStat.bytesSent/1_000_000d;
                 report.HighlightedMetrics[$"{transceiverTag}.packetSent"] = outRtpStat.packetsSent;
                 report.HighlightedMetrics[$"{transceiverTag}.framePerSeconds"] = outRtpStat.framesPerSecond;

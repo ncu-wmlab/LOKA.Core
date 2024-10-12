@@ -65,7 +65,7 @@ public class LokaHost : SignalingHandlerBase,
     {
         if(_instance) 
         {
-            Debug.LogWarningFormat("Only one instance of LokaHost is allowed! Remove dulicated instance: {0}", gameObject.name);
+            Debug.LogWarningFormat("Only one instance of LokaHost is allowed! Remove dulpicated instance: {0}", gameObject.name);
             Destroy(gameObject);
             return;    
         }
