@@ -71,18 +71,27 @@ public class LokaRtcStatsManager : MonoBehaviour
         }
 
         // iterate stats
-        // FIXME dulp in LokaRtcStatsReportPanelBase.cs
+        // FIXME should remove LokaRtcStatsReportPanelBase.cs
         foreach(var stat in getStatsTask.Value.Stats)
         {
             RTCStatsType rtcStatType = stat.Value.Type;
-            long timeStamp = stat.Value.Timestamp;
+            long timeStamp = stat.Value.Timestamp;            
             
+            // Get report of that player
             if(!StatsReports.ContainsKey(player))
             {
                 StatsReports[player] = new LokaRtcStatsReport();
             }
             LokaRtcStatsReport report = StatsReports[player];
 
+            // check dulplicate data
+            long lastTimestamp = 0;  
+            if(report.Metrics.ContainsKey($"{transceiverTag}.timestamp"))
+                lastTimestamp = (long)report.Metrics[$"{transceiverTag}.timestamp"];
+            if(timeStamp <= lastTimestamp)
+                continue;
+
+            // Save highlighted Stats
             if(rtcStatType == RTCStatsType.InboundRtp)
             {
                 var inboundRtpStat = (RTCInboundRTPStreamStats)stat.Value;
@@ -91,9 +100,6 @@ public class LokaRtcStatsManager : MonoBehaviour
                 ulong lastBytesReceived = 0;
                 if(report.Metrics.ContainsKey($"{transceiverTag}.{rtcStatType}.bytesReceived"))
                     lastBytesReceived = (ulong)report.Metrics[$"{transceiverTag}.{rtcStatType}.bytesReceived"];
-                long lastTimestamp = 0;                ;
-                if(report.Metrics.ContainsKey($"{transceiverTag}.timestamp"))
-                    lastTimestamp = (long)report.Metrics[$"{transceiverTag}.timestamp"];
                 double timeDelta = (timeStamp - lastTimestamp)/1_000_000d; // μs to s   
                 ulong bytesDelta = bytesReceived - lastBytesReceived;
                 var bitrate = bytesDelta * 8 / timeDelta;                
@@ -104,7 +110,17 @@ public class LokaRtcStatsManager : MonoBehaviour
             }
             else if(rtcStatType == RTCStatsType.OutboundRtp)
             {
-                var outRtpStat = (RTCOutboundRTPStreamStats)stat.Value;                
+                var outRtpStat = (RTCOutboundRTPStreamStats)stat.Value;  
+
+                // bitrate              
+                ulong bytesSent = outRtpStat.bytesSent;
+                ulong lastBytesSent = 0;
+                if(report.Metrics.ContainsKey($"{transceiverTag}.{rtcStatType}.bytesSent"))
+                    lastBytesSent = (ulong)report.Metrics[$"{transceiverTag}.{rtcStatType}.bytesSent"];                
+                double timeDelta = (timeStamp - lastTimestamp)/1_000_000d; // μs to s
+                ulong bytesDelta = bytesSent - lastBytesSent;
+                var bitrate = bytesDelta * 8 / timeDelta;
+                report.HighlightedMetrics[$"{transceiverTag}.bitrate (Mbps)"] = bitrate/1_000_000d;
 
                 report.HighlightedMetrics[$"{transceiverTag}.targetBitrate (Mbps)"] = outRtpStat.targetBitrate/1_000_000d;
                 report.HighlightedMetrics[$"{transceiverTag}.sent (MB)"] = outRtpStat.bytesSent/1_000_000d;
@@ -120,13 +136,13 @@ public class LokaRtcStatsManager : MonoBehaviour
             }
             
             // Save all stats
-            report.Metrics[$"{transceiverTag}.timestamp"] = stat.Value.Timestamp;
             foreach(var pair in stat.Value.Dict)
             {                
                 report.Metrics[$"{transceiverTag}.{rtcStatType}.{pair.Key}"] = pair.Value;
             }
+            report.Metrics[$"{transceiverTag}.timestamp"] = stat.Value.Timestamp;
+            report.Timestamp = DateTimeOffset.Now.ToString("o");
 
-            // 
             OnStatsUpdated?.Invoke(player, report);
         }        
     }   

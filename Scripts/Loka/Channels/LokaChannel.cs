@@ -56,9 +56,9 @@ public abstract class LokaChannel : DataChannelBase
     /// <param name="msg">The body of the message (e.g. 10000, "3952") <b>注意 float 會被轉換為 double；並且若你傳的是物件，要可以被序列化</b></param>
     public void Send(int tag, object msg)
     {
-        // FIXME 或許我們不該使用 json 來做這些事，之後再來改 先求有再求好
-        // 考慮過使用 MemoryPack，但會有 Unity 版本問題
-        var m = JsonConvert.SerializeObject(
+        // FIXME 或許我們不該使用 json 來做接傳值，效率很低，之後再來改
+        // 考慮使用 MemoryPack https://github.com/Cysharp/MemoryPack，但會有 Unity 版本問題 (需要 2022.3.12f)
+        string m = JsonConvert.SerializeObject(
             new Message{ T = tag, M = msg }, 
             new JsonSerializerSettings { 
                 NullValueHandling = NullValueHandling.Ignore,  
@@ -68,8 +68,9 @@ public abstract class LokaChannel : DataChannelBase
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 ContractResolver = new WritablePropertiesOnlyResolver(),
             });
-        Debug.Log($"[{GetType()}] <color=#e67e22>SEND</color> {tag}: {msg}");  // FIXME Logging should be removed in production
-        // Debug.Log($"[{GetType()}] <color=#e67e22>SENDRAW</color> (Len={m.Length}) {m}");  
+#if UNITY_EDITOR
+        Debug.Log($"[{GetType()}] <color=#e67e22>SEND</color> {tag}: {msg} (Len={m.Length})");  // Logging should be removed in production
+#endif
         Send(m);
     }
 

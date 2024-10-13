@@ -29,6 +29,7 @@ public class LokaRtcStatsReportPanelBase : BaseDictPanel
         }
 
         // iterate stats
+        // FIXME dulp in LabRtcStatsManager.cs, should migrate to that
         foreach(var stat in getStatsTask.Value.Stats)
         {
             RTCStatsType type = stat.Value.Type;

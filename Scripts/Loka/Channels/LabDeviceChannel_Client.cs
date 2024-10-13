@@ -47,18 +47,30 @@ public partial class LabDeviceChannel : LokaChannel
         try
         {
             // Ganglion
+#if UNITY_ANDROID && !UNITY_EDITOR
             ClientSendMessage(LabDeviceSignal.GANGLION_ISAVAILABLE, true); // FIXME Ganglion_IsAvailable
             ClientSendMessage(LabDeviceSignal.GANGLION_ISCONNECTED, GanglionManager.Instance.IsConnected);            
+#else
+            ClientSendMessage(LabDeviceSignal.GANGLION_ISAVAILABLE, false);
+#endif
 
             // EyeTrack
+#if UNITY_ANDROID && !UNITY_EDITOR
             ClientSendMessage(LabDeviceSignal.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
             ClientSendMessage(LabDeviceSignal.EYETRACK_EYELEFTRIGHTDATA, EyeTrackManager.Instance.GetEyeLeftRightData());
             ClientSendMessage(LabDeviceSignal.EYETRACK_COMBINEDDATA, EyeTrackManager.Instance.GetEyeCombinedData());
             // ClientSendMessage($"EyeTrack.EyeFocusData", EyeTrackManager.Instance.GetEyeFocusData());  // client 一般都對著投影看，沒有意義
+#else
+            ClientSendMessage(LabDeviceSignal.EYETRACK_ISAVAILABLE, true); // TODO EyeTrack_IsAvailable
+#endif
 
             // Breath
+#if UNITY_ANDROID && !UNITY_EDITOR
             ClientSendMessage(LabDeviceSignal.BREATHSTRAP_ISAVAILABLE, true); // TODO Breath_IsAvailable
             ClientSendMessage(LabDeviceSignal.BREATHSTRAP_ISCONNECTED, BreathStrapManager.Instance.IsConnected());
+#else
+            ClientSendMessage(LabDeviceSignal.BREATHSTRAP_ISAVAILABLE, false); 
+#endif
   
             // Hands
             ClientSendMessage(LabDeviceSignal.HAND_LEFT_JOINTS_POSE, LocalHandJointsManager.Instance?.GetJoints(Handedness.Left));
