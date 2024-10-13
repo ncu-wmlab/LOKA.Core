@@ -20,6 +20,7 @@
       "com.unity.xr.hands": "1.4.1",
 
       "com.xrlab.labframe": "0.0.16",
+      "com.xrlab.labframe_bluetooth": "1.0.3",
       "com.xrlab.labframe_breathstrap": "1.0.0",
       "com.xrlab.labframe_eyetrack": "1.0.1",
       "com.xrlab.labframe_ganglion": "1.0.12"
