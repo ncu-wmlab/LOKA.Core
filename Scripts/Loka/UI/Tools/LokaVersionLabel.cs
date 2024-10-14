@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 
+[RequireComponent(typeof(TMP_Text))]
 public class LokaVersionLabel : MonoBehaviour
 {
     /// <summary>

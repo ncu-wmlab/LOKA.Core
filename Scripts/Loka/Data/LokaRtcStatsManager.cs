@@ -37,17 +37,19 @@ public class LokaRtcStatsManager : MonoBehaviour
         {
             foreach(LokaPlayer player in LokaHost.Instance.ConnectedPlayers.Values)
             {
-                var audioOut = player.AudioSender?.Transceivers?.FirstOrDefault().Value?.Sender;
-                if(audioOut != null)
+                int i = 0;
+                foreach(var transceiver in player.VideoSender.Transceivers.Values)
                 {
-                    yield return UpdateStatsAsync(audioOut.GetStats(), player, "AudioOut");
+                    yield return UpdateStatsAsync(transceiver.Sender?.GetStats(), player, "VideoOut"+i);
+                    i++;
                 }
-
-                var videoOut = player.VideoSender?.Transceivers?.FirstOrDefault().Value?.Sender;
-                if(videoOut != null)
-                {
-                    yield return UpdateStatsAsync(videoOut.GetStats(), player, "VideoOut");
-                }
+                // FIXME audio 先不收
+                // i = 0;
+                // foreach(var transceiver in player.AudioSender.Transceivers.Values)
+                // {
+                //     yield return UpdateStatsAsync(transceiver.Sender?.GetStats(), player, "AudioOut"+i);
+                //     i++;
+                // }                
             }
 
             yield return new WaitForSecondsRealtime(RefreshInterval);
@@ -63,33 +65,50 @@ public class LokaRtcStatsManager : MonoBehaviour
     /// <returns></returns>
     protected IEnumerator UpdateStatsAsync(RTCStatsReportAsyncOperation getStatsTask, LokaPlayer player, string transceiverTag)
     {
+        if(getStatsTask == null)
+        {
+            yield break;
+        }
+
+        // run getStatsTask
         yield return getStatsTask;
+
+        // handle error
         if(getStatsTask.IsError)
         {
             Debug.LogWarning($"[StatsPanel] Read Stats Error: {getStatsTask.Error.message}");
             yield break;
         }
 
-        // iterate stats
+        // Get report of that player
+        if(!StatsReports.ContainsKey(player))
+        {
+            StatsReports[player] = new LokaRtcStatsReport();
+        }
+        LokaRtcStatsReport report = StatsReports[player];
+
+        // get report timestamp & check duplicate data
+        // 注意：remote 的 stats 可能會有不同的 timestamp，看要不要檢查 (e.g. RemoteInboundRtp)
+        var firstStat = getStatsTask.Value.Stats.FirstOrDefault();
+        if(firstStat.Value == null)
+            yield break;
+        long timeStamp = firstStat.Value.Timestamp; 
+        long lastTimestamp = 0;  
+        if(report.Metrics.ContainsKey($"{transceiverTag}.timestamp"))
+            lastTimestamp = (long)report.Metrics[$"{transceiverTag}.timestamp"];
+        if(timeStamp <= lastTimestamp)
+            yield break;
+
+        // iterate stats of each type
         // FIXME should remove LokaRtcStatsReportPanelBase.cs
         foreach(var stat in getStatsTask.Value.Stats)
         {
-            RTCStatsType rtcStatType = stat.Value.Type;
-            long timeStamp = stat.Value.Timestamp;            
+            RTCStatsType rtcStatType = stat.Value.Type;   
             
-            // Get report of that player
-            if(!StatsReports.ContainsKey(player))
-            {
-                StatsReports[player] = new LokaRtcStatsReport();
-            }
-            LokaRtcStatsReport report = StatsReports[player];
-
-            // check dulplicate data
-            long lastTimestamp = 0;  
-            if(report.Metrics.ContainsKey($"{transceiverTag}.timestamp"))
-                lastTimestamp = (long)report.Metrics[$"{transceiverTag}.timestamp"];
-            if(timeStamp <= lastTimestamp)
-                continue;
+            // if(timeStamp != stat.Value.Timestamp)
+            // {
+            //     Debug.LogWarning($"RTC Stat time unmatch: {rtcStatType} expect {timeStamp} but this stat is {stat.Value.Timestamp}");
+            // }
 
             // Save highlighted Stats
             if(rtcStatType == RTCStatsType.InboundRtp)
@@ -103,7 +122,8 @@ public class LokaRtcStatsManager : MonoBehaviour
                 double timeDelta = (timeStamp - lastTimestamp)/1_000_000d; // μs to s   
                 ulong bytesDelta = bytesReceived - lastBytesReceived;
                 var bitrate = bytesDelta * 8 / timeDelta;                
-                report.HighlightedMetrics[$"{transceiverTag}.bitrate (Mbps)"] =  bitrate/1_000_000d;
+                report.HighlightedMetrics[$"{transceiverTag}.bitrate (kbps)"] =  bitrate/1_000d;
+                
                 // other stats
                 report.HighlightedMetrics[$"{transceiverTag}.received (MB)"] = inboundRtpStat.bytesReceived/1_000_000d;
                 report.HighlightedMetrics[$"{transceiverTag}.jitter (ms)"] = inboundRtpStat.jitter*1000d;
@@ -120,9 +140,9 @@ public class LokaRtcStatsManager : MonoBehaviour
                 double timeDelta = (timeStamp - lastTimestamp)/1_000_000d; // μs to s
                 ulong bytesDelta = bytesSent - lastBytesSent;
                 var bitrate = bytesDelta * 8 / timeDelta;
-                report.HighlightedMetrics[$"{transceiverTag}.bitrate (Mbps)"] = bitrate/1_000_000d;
+                report.HighlightedMetrics[$"{transceiverTag}.bitrate (kbps)"] = bitrate/1_000d;
 
-                report.HighlightedMetrics[$"{transceiverTag}.targetBitrate (Mbps)"] = outRtpStat.targetBitrate/1_000_000d;
+                report.HighlightedMetrics[$"{transceiverTag}.targetBitrate (kbps)"] = outRtpStat.targetBitrate/1_000d;
                 report.HighlightedMetrics[$"{transceiverTag}.sent (MB)"] = outRtpStat.bytesSent/1_000_000d;
                 report.HighlightedMetrics[$"{transceiverTag}.packetSent"] = outRtpStat.packetsSent;
                 report.HighlightedMetrics[$"{transceiverTag}.framePerSeconds"] = outRtpStat.framesPerSecond;
@@ -139,12 +159,22 @@ public class LokaRtcStatsManager : MonoBehaviour
             foreach(var pair in stat.Value.Dict)
             {                
                 report.Metrics[$"{transceiverTag}.{rtcStatType}.{pair.Key}"] = pair.Value;
-            }
-            report.Metrics[$"{transceiverTag}.timestamp"] = stat.Value.Timestamp;
-            report.Timestamp = DateTimeOffset.Now.ToString("o");
+            }            
 
-            OnStatsUpdated?.Invoke(player, report);
         }        
+
+        // update timestamp
+        report.Timestamp = DateTimeOffset.Now.ToString("o");
+        report.Metrics[$"{transceiverTag}.timestamp"] = timeStamp;
+
+        // 這裡 clone 一份 report 給外部使用
+        LokaRtcStatsReport cloneReport = new LokaRtcStatsReport
+        {
+            Timestamp = report.Timestamp,
+            Metrics = new Dictionary<string, object>(report.Metrics),
+            HighlightedMetrics = new Dictionary<string, object>(report.HighlightedMetrics)
+        };
+        OnStatsUpdated?.Invoke(player, cloneReport);
     }   
 
 }

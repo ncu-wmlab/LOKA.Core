@@ -24,6 +24,11 @@ public class LokaHost : SignalingHandlerBase,
     [Header("Prefabs")]
     [SerializeField] LokaPlayer _playerPrefab;
 
+    [Header("Configs")]
+    [SerializeField] int _targetFrameRate = 120;
+    
+    /* -------------------------------------------------------------------------- */
+
     /// <summary>
     /// 連線 ID 列表
     /// </summary>
@@ -72,6 +77,8 @@ public class LokaHost : SignalingHandlerBase,
         _instance = this;
         DontDestroyOnLoad(gameObject);        
         GetComponent<SignalingManager>().Run(null, new SignalingHandlerBase[]{this});
+
+        Application.targetFrameRate = _targetFrameRate;        
     }
 
     /* -------------------------------------------------------------------------- */

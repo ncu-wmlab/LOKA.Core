@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LabFrame2023;
 using System.Linq;
 using System;
+using Newtonsoft.Json;
 
 [RequireComponent(typeof(LokaHost))]
 [RequireComponent(typeof(LokaRtcStatsManager))]
@@ -31,7 +32,9 @@ public class LokaDataManager : MonoBehaviour
         lokaRtcStatsManager.OnStatsUpdated += (player, report) =>
         {
             if(CollectConnectionStats)
+            {
                 SaveData(player, report);
+            }
         } ;
     }
 
@@ -72,7 +75,7 @@ public class LokaDataManager : MonoBehaviour
         if(!LabDataManager.Instance.IsInited)
         {
             // 用時間做為實驗資料的 UserID (LabData 資料夾名)
-            LabDataManager.Instance.LabDataInit(System.DateTime.Now.ToString("yyyyMMdd-HHmmss"));
+            LabDataManager.Instance.LabDataInit(DateTime.Now.ToString("yyyyMMdd-HHmmss"));
         }
 
         if(data == null)
