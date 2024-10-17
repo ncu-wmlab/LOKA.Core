@@ -21,8 +21,16 @@ public class LokaHost : SignalingHandlerBase,
 
     /* -------------------------------------------------------------------------- */
 
-    [Header("Prefabs")]
-    [SerializeField] LokaPlayer _playerPrefab;
+    [Header("Prefabs / GameObjects")]
+    [SerializeField] 
+    [Tooltip("The prefab to instantiate for each player")]
+    LokaPlayer _playerPrefab;
+
+    [SerializeField]
+    [Tooltip("The spawn point for each player")]
+    Transform _spawnPoint;
+
+
 
     [Header("Configs")]
     [SerializeField] int _targetFrameRate = 120;
@@ -96,6 +104,7 @@ public class LokaHost : SignalingHandlerBase,
 
         // Add Player to the scene
         var newPlayer = Instantiate(_playerPrefab);
+        newPlayer.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
         newPlayer.Init(eventData.connectionId);  // Init player
         _connectedPlayers.Add(eventData.connectionId, newPlayer);
 

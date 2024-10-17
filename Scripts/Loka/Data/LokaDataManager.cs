@@ -10,7 +10,8 @@ using Newtonsoft.Json;
 [RequireComponent(typeof(LokaRtcStatsManager))]
 public class LokaDataManager : MonoBehaviour
 {
-    protected bool _isInited = false;
+    public static LokaDataManager Instance { get; private set; }
+
 
     [Header("是否收集玩家實驗資料 LabData")]
     public bool CollectEyeTrack = false;
@@ -21,6 +22,24 @@ public class LokaDataManager : MonoBehaviour
     public bool CollectConnectionStats = false;
 
     LokaRtcStatsManager lokaRtcStatsManager;
+
+
+    /* -------------------------------------------------------------------------- */
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    void Awake()
+    {
+        if(Instance != null)
+        {
+            Debug.LogWarning("LokaDataManager already exists. Destroying this instance.");
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -65,6 +84,12 @@ public class LokaDataManager : MonoBehaviour
     }
 
     /* -------------------------------------------------------------------------- */
+
+    /// <summary>
+    /// 儲存單一玩家的實驗資料
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="data"></param>
     public void SaveData(LokaPlayer player, LabDataBase data)
     {
         SaveData(player.ConnectionId, data);

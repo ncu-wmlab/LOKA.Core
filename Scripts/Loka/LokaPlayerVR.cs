@@ -61,9 +61,11 @@ public class LokaPlayerVR : LokaPlayer
     {
         base.LateInit();
         
-        // TODO set new max bitrate (10Mbps is the max on ui, but we can set higher with script)
+        // TODO set new max bitrate (10000kbps is the max on ui, but we can set higher with script)
         // set higher may cause "fail to set video codec"
-        VideoSender.SetBitrate(VideoSender.minBitrate, 10/*Mbps*/*1000*1000);
+        uint maxBitrate = 30000; // kbps
+        uint minBitrate = maxBitrate/5; // kbps
+        VideoSender.SetBitrate(minBitrate, maxBitrate);
 
         _xrOrigin_snapTurnProvider = _xrOrigin_snapTurnProvider ?? GetComponentInChildren<ActionBasedSnapTurnProvider>();
         _xrOrigin_continuousTurnProvider = _xrOrigin_continuousTurnProvider ?? GetComponentInChildren<ActionBasedContinuousTurnProvider>();
